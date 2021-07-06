@@ -1,0 +1,6 @@
+framework module Pods_Dr_M_Aiman {
+  umbrella header "Pods-Dr.M.Aiman-umbrella.h"
+
+  export *
+  module * { export * }
+}
