@@ -14,7 +14,6 @@ class LiveVC : UIViewController {
     
     
     @IBOutlet weak var LiveTV: UITableView!
-    //    let searchcontroller = UISearchController()
     @IBOutlet weak var BuAddLiveOut: UIBarButtonItem!
     //---------- Add New Live -----
     @IBOutlet var popupViewOut: UIView!
@@ -35,11 +34,6 @@ class LiveVC : UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        print(":::::::::::: \(Helper.getRoleName())")
-        print(ArrLive.count)
-        print(ArrLive)
-        print(Helper.getImage())
         
         if Helper.getRoleName() == "Student"{
             self.navigationItem.rightBarButtonItem = nil
@@ -278,7 +272,8 @@ extension LiveVC : UITableViewDataSource , UITableViewDelegate , LiveActionDeleg
         return ArrLive.count
     }
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "LiveTVCell") as! LiveTVCell
+        tableView.register(UINib(nibName: "PostBodyXibCell", bundle: nil), forCellReuseIdentifier: "PostBodyXibCell")
+        let cell = tableView.dequeueReusableCell(withIdentifier: "PostBodyXibCell") as! LiveTVCell
         
         
         cell.delegate = self
@@ -293,10 +288,8 @@ extension LiveVC : UITableViewDataSource , UITableViewDelegate , LiveActionDeleg
             cell.BtnMore.isHidden  = false
         }
         
-
-        
         cell.cellMainLabel.text   = ArrLive[indexPath.row].FirstName
-        cell.TimeLabel.text       = ArrLive[indexPath.row].CreationTime
+        cell.TimeLabel.text       = "\(ArrLive[indexPath.row].CreationTime)"
         cell.WatchinNumberLa.text = "\(ArrLive[indexPath.row].ReactCount)"
         Helper.SetImage(EndPoint: "\(ArrLive[indexPath.row].UserImage)", image: cell.cellImage, name: "person.fill" , status: 0)
         cell.cellImage.setupImageViewer()

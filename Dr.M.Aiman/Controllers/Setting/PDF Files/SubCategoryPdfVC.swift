@@ -15,6 +15,7 @@ class SubCategoryPdfVC: UIViewController {
     @IBOutlet weak var TVSub: UITableView!
     @IBOutlet weak var TitleBare: UILabel!
     @IBOutlet weak var BtnBack: UIButton!
+    @IBOutlet weak var BUPlus: UIButton!
     
     //
     
@@ -59,6 +60,12 @@ class SubCategoryPdfVC: UIViewController {
         LaAddOrUpdate.text = "Add Pdf Description"
         BtnSelectPdf.isHidden = false
         BtnAddOrUpdate.setTitle("Add", for: .normal)
+        
+        if Helper.getRoleName() == "Student"{
+            BUPlus.isHidden = true
+        } else{
+            BUPlus.isHidden = false
+        }
         
     }
     

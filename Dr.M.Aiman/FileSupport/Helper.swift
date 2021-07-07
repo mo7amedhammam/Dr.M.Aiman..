@@ -103,38 +103,11 @@ class Helper: NSObject  {
             def.synchronize()
         }
         
-        
         class func getPasswordSave()->String{
             let def = UserDefaults.standard
             return (def.object(forKey: "passwordSave") as! String)
         }
  
-    //save image
-    class func setUserImage(user_imagee : String) {
-        let def = UserDefaults.standard
-        def.setValue(user_imagee, forKey: "Image")
-        def.synchronize()
-    }
-    
-    class func getUserImage()->String{
-        let def = UserDefaults.standard
-        return (def.object(forKey: "Image") as! String)
-    }
-    
-    
-    //save cover
-    class func setUserCover(user_imagee : String) {
-        let def = UserDefaults.standard
-        def.setValue(user_imagee, forKey: "Image")
-        def.synchronize()
-    }
-    
-    class func getUserCover()->String{
-        let def = UserDefaults.standard
-        return (def.object(forKey: "Image") as! String)
-    }
-   
-    
     
     class func logout() {
         let def = UserDefaults.standard

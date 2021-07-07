@@ -7,6 +7,7 @@
 
 import UIKit
 import PKHUD
+import ImageViewer_swift
 
 class EditProfileVC: UIViewController {
     
@@ -45,21 +46,10 @@ class EditProfileVC: UIViewController {
         LAname.text       = Helper.getFirstName()
         TFemail.text      = Helper.getEmail()
         TFphone.text      = Helper.getPhoneNumber()
-        Helper.SetImage(EndPoint: Helper.getUserImage(), image: profileImage, name: "person.fill", status: 1)
-        Helper.SetImage(EndPoint: Helper.getUserCover(), image: coverImage, name: "person.fill", status: 1)
-        
-        print("image >>>>>>>. \(URLs.ImageBaseURL+Helper.getUserImage())")
-        print("cover >>>>>>>. \(URLs.ImageBaseURL+Helper.getUserCover())")
-
-        TFuniversity.text = "Menofia"
-        TFrole.text       = "\(Helper.getGender())"
-        TFpasword.text    = Helper.getPasswordSave()
-        print(" image : \(Helper.getImage())")
-        print(" name : \(Helper.getFirstName())")
-        print(" email : \(Helper.getEmail())")
-        print(" phone : \(Helper.getPhoneNumber())")
-        print(" gender : \(Helper.getGender())")
-
+        Helper.SetImage(EndPoint: Helper.getImage(), image: profileImage, name: "person.fill", status: 1)
+        Helper.SetImage(EndPoint: Helper.getCover(), image: coverImage, name: "person.fill", status: 1)
+        profileImage.setupImageViewer()
+        coverImage.setupImageViewer()
     }
  
     var imageindex = 0
@@ -71,7 +61,7 @@ class EditProfileVC: UIViewController {
     
     @IBAction func profileImageBtnPressed(_ sender: Any) {
         showPhotoMenu()
-        imageindex = 0
+        imageindex = 2
         
     }
     
@@ -83,11 +73,13 @@ class EditProfileVC: UIViewController {
         if imageindex == 1 {
             coverImage.image = image
             updateUserImage(type: .coverImage)
-            imageindex = 0
-        } else {
+        } else  if imageindex == 2{
             profileImage.image = image
             updateUserImage(type: .profileImage)
+        }else {
+            
         }
+        
     }
     
     

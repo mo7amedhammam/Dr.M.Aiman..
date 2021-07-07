@@ -51,6 +51,7 @@ class FavouritePosts: UIViewController {
     }
     
     @IBAction func BURefreshEmpty(_ sender: Any) {
+        self.postArray.removeAll()
         self.GetLive(Type: "Favourite", Refresh: "reload")
 
     }

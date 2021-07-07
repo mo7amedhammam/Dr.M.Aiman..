@@ -41,7 +41,6 @@ class LiveTVCell: UITableViewCell {
     }
     
     
-    
     @IBAction func BuMoreOptions(_ sender: Any) {
         delegate.MoreFun(index: indexx , PostLa: PostLa, deleteIndex: deleteIndex)
     }

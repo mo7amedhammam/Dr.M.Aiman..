@@ -86,7 +86,7 @@ class API : NSObject {
                         print("multipart user image = \(json)")   //OK
                         
                         completion(nil , 0 , "Uplouded successfully" , json.string! )
-                        Helper.setUserImage(user_imagee:json.string!)
+//                        Helper.setUserImage(user_imagee:json.string!)
 
                     case .failure(let error) :
                         completion(error , -1  , "\(error)" , nil)
@@ -111,18 +111,18 @@ class API : NSObject {
     
     class func  updateImage (type: newimageEnum, Image : String, completion : @escaping (_ error : Error? , _ status : Int ,_ message : String? ) ->Void) {
         
-
+        
         let header = [ "content-type" : "application/json"  , "Authorization" : Helper.getAccessToken() ]
         var url : String
         var jsonString : [String : Any]
         
         switch type {
         case.profileImage:
-             url = URLs.updateUserImage
+            url = URLs.updateUserImage
             jsonString = ["Image" : Image]
         case.coverImage:
             url = URLs.uodateUserCover
-            jsonString = ["Image" : Image]
+            jsonString = ["Cover" : Image]
         }
         
         Alamofire.request(url, method: .post, parameters: jsonString , encoding: JSONEncoding.default, headers: header)
@@ -133,20 +133,16 @@ class API : NSObject {
                     completion(error , 1  , "Failed" )
                 case .success(let value) :
                     let json = JSON(value)
-                    print(json)
-
-                    
-                    print("updated image json\(json)")
-
-                   
+                    print("updated image sjson\(json)")
                     
                     if json["Status"] == 0 {
-
+                        
                         switch type {
                         case .profileImage:
-                            Helper.setUserImage(user_imagee: json["Image"].string ?? "")
+                            Helper.setUserData(Id: Helper.getId(), Email: Helper.getEmail(), PhoneNumber: Helper.getPhoneNumber(), FirstName: Helper.getFirstName(), Image: Image, Cover: Helper.getCover(), Gender: Helper.getGender(), RoleName: Helper.getRoleName())
+                            
                         case .coverImage:
-                            Helper.setUserCover(user_imagee: json["Image"].string ?? "")
+                            Helper.setUserData(Id: Helper.getId(), Email: Helper.getEmail(), PhoneNumber: Helper.getPhoneNumber(), FirstName: Helper.getFirstName(), Image: Helper.getImage(), Cover: Image, Gender: Helper.getGender(), RoleName: Helper.getRoleName())
                         }
                         
                         completion(nil , 0 ,json["Message"].string ?? "")
@@ -245,11 +241,9 @@ class API : NSObject {
                                            Gender:  json["Response"]["Gender"].bool ?? true,
                                            RoleName:  json["Response"]["RoleName"].string ?? ""
                         )
-                        print ("  info --> image :: \(json["Response"]["Image"].string ?? "")")
-                        print ("  info --> cover :: \(json["Response"]["Cover"].string ?? "")")
-
-                        Helper.setUserImage(user_imagee: "\(json["Response"]["Image"].string ?? "")")
-                        Helper.setUserCover(user_imagee: "\(json["Response"]["Cover"].string ?? "")")
+  
+//                        Helper.setUserImage(user_imagee: "\(json["Response"]["Image"].string ?? "")")
+//                        Helper.setUserCover(user_imagee: "\(json["Response"]["Cover"].string ?? "")")
                         completion(nil , 0 ,json["Message"].string ?? "")
                         
                     } else {
@@ -284,7 +278,7 @@ class API : NSObject {
                             
                             Helper.setUserData(Id: Helper.getId(),
                                                Email:  Email ,
-                                               PhoneNumber:  PhoneNumber , FirstName: FirstName , Image: Helper.getUserImage(), Cover: Helper.getUserCover(),
+                                               PhoneNumber:  PhoneNumber , FirstName: FirstName , Image: Helper.getImage(), Cover: Helper.getCover(),
                                                Gender:  Helper.getGender(),
                                                RoleName:  Helper.getRoleName()
                             )

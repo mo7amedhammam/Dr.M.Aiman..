@@ -215,7 +215,7 @@ class ClientSignUPVC: UIViewController {
                 print("---------- with image --------- \(imageurlString)")
 
                 
-                Helper.setUserImage(user_imagee: imageurlString)
+//                Helper.setUserImage(user_imagee: imageurlString)
                 
                 self.dismiss(animated: true, completion: nil)
             } else  if  error == nil && status == -1 {
