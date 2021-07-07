@@ -17,8 +17,20 @@ struct URLs {
     static let Register          = BaseURL + "/Account/Register"
     /// post >   Mobile - MacAdress - ConfirmationCode
     static let Login             = BaseURL + "/Account/Login"
+    
     /// post  -- Content-Type: multipart/form-data;
     static let SaveUserImage         = BaseURL + "/Account/SaveImage"
+
+    /// post  -- Content-Type: application/json;
+    ///   "Cover":"/Images/Users/wjpH7lugxJeu97tDBDtslg1gHebswg32FDwkpi1fJwK32hh1yKlogo.PNG"
+        static let updateUserImage       = BaseURL + "/User/UpdateImage"
+   
+    /// post  -- Content-Type: application/json;
+ ///   "Cover":"/Images/Users/wjpH7lugxJeu97tDBDtslg1gHebswg32FDwkpi1fJwK32hh1yKlogo.PNG"
+    static let uodateUserCover       = BaseURL + "/User/UpdateCover"
+    
+
+
     /// post  > Mobile
     static let RequestVerificationCode         = BaseURL + "/Account/RequestLoginConfirmationCode"
     /// post  > Email & macAddress

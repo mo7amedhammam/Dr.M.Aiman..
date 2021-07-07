@@ -50,6 +50,12 @@ class FavouritePosts: UIViewController {
         self.GetLive(Type: "Favourite", Refresh: "refresh")
     }
     
+    @IBAction func BURefreshEmpty(_ sender: Any) {
+        self.GetLive(Type: "Favourite", Refresh: "reload")
+
+    }
+    
+    
     override func viewWillAppear(_ animated: Bool) {
         self.postArray.removeAll()
         self.GetLive(Type: "Favourite", Refresh: "reload")
@@ -68,14 +74,14 @@ class FavouritePosts: UIViewController {
                 if error == nil && info != nil  {
                     
                     if info!.isEmpty {
-                        self.showAlert(message: "No Content To show")
-                        //                        AllPostsTV.isHidden = true
+//                        self.showAlert(message: "No Content To show")
+                        AllPostsTV.isHidden = true
                         HUD.hide(animated: true)
                     } else {
                         for data in info! {
                             self.postArray.append(data)
-                            AllPostsTV.isHidden = false
                         }
+                        AllPostsTV.isHidden = false
                         AllPostsTV.reloadData()
                         HUD.hide(animated: true)
                         self.refreshControl.endRefreshing()

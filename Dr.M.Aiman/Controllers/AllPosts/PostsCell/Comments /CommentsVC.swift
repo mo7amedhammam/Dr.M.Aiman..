@@ -312,7 +312,7 @@ extension CommentsVC : UITableViewDataSource , UITableViewDelegate {
         cell.LaName.text    = ArrComm[indexPath.row].FirstName
         cell.LaComment.text = ArrComm[indexPath.row].text
         cell.LaTimeAgo.text = "3 min "
-        //        Helper.SetImage(EndPoint: ArrComm[indexPath.row].UserImage, image: cell.IVPerson, name: "2", status: 1)
+                Helper.SetImage(EndPoint: ArrComm[indexPath.row].UserImage, image: cell.IVPerson, name: "2", status: 1)
         if ArrComm[indexPath.row].Image.isEmpty == true  || ArrComm[indexPath.row].Image == "" {
             cell.HeightViewImage.constant = 0
         } else {

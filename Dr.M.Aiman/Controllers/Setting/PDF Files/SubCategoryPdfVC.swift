@@ -243,11 +243,11 @@ extension SubCategoryPdfVC : UITableViewDataSource , UITableViewDelegate , MoreA
         cell.delegate = self
         cell.LaName.text = ArrSub[indexPath.row].Title
         
-//        if Helper.getRoleName() == "Student" {
-//            cell.BtnMore.isHidden = true
-//        } else {
-//            cell.BtnMore.isHidden = false
-//        }
+        if Helper.getRoleName() == "Student" {
+            cell.BtnMore.isHidden = true
+        } else {
+            cell.BtnMore.isHidden = false
+        }
         
         return cell
     }

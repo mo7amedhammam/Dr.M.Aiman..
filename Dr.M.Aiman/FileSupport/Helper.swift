@@ -16,6 +16,7 @@ class Helper: NSObject  {
   var PhoneNumber = ""
   var FirstName   = ""
   var Image       = ""
+  var Cover       = ""
   var Gender      = true
   var RoleName    = ""
     
@@ -24,6 +25,7 @@ class Helper: NSObject  {
                                  PhoneNumber : String,
                                  FirstName : String,
                                  Image : String,
+                                 Cover : String,
                                  Gender : Bool,
                                  RoleName : String
                                   ){
@@ -34,6 +36,7 @@ class Helper: NSObject  {
         def.setValue(  PhoneNumber         , forKey: "PhoneNumber"  )
         def.setValue(  FirstName         , forKey: "FirstName"   )
         def.setValue(  Image           , forKey: "Image"  )
+        def.setValue(  Cover           , forKey: "Cover"  )
         def.setValue(  Gender             , forKey: "Gender"   )
         def.setValue(  RoleName            , forKey: "RoleName"  )
 
@@ -67,6 +70,10 @@ class Helper: NSObject  {
     class func getImage() ->String {
         let def = UserDefaults.standard
         return (def.object(forKey: "Image") as! String)
+    }
+    class func getCover() ->String {
+        let def = UserDefaults.standard
+        return (def.object(forKey: "Cover") as! String)
     }
     class func getGender() ->Bool {
         let def = UserDefaults.standard
@@ -102,6 +109,33 @@ class Helper: NSObject  {
             return (def.object(forKey: "passwordSave") as! String)
         }
  
+    //save image
+    class func setUserImage(user_imagee : String) {
+        let def = UserDefaults.standard
+        def.setValue(user_imagee, forKey: "Image")
+        def.synchronize()
+    }
+    
+    class func getUserImage()->String{
+        let def = UserDefaults.standard
+        return (def.object(forKey: "Image") as! String)
+    }
+    
+    
+    //save cover
+    class func setUserCover(user_imagee : String) {
+        let def = UserDefaults.standard
+        def.setValue(user_imagee, forKey: "Image")
+        def.synchronize()
+    }
+    
+    class func getUserCover()->String{
+        let def = UserDefaults.standard
+        return (def.object(forKey: "Image") as! String)
+    }
+   
+    
+    
     class func logout() {
         let def = UserDefaults.standard
         def.removeObject(forKey:"Id"  )
@@ -109,6 +143,7 @@ class Helper: NSObject  {
         def.removeObject(forKey:"PhoneNumber"  )
         def.removeObject(forKey:"FirstName"       )
         def.removeObject(forKey:"Image"       )
+        def.removeObject(forKey:"Cover"       )
         def.removeObject(forKey:"Gender"       )
         def.removeObject(forKey:"RoleName"       )
         def.removeObject(forKey:"access_token"       )
@@ -330,3 +365,23 @@ class Helper: NSObject  {
     
     
     }
+
+@IBDesignable class CardView: UIView {
+    
+    
+    var CornerRadius : CGFloat = 12
+    var ofsetWidth : CGFloat = 0
+    var ofsethHight : CGFloat = 0
+    var ofsethShadowOpacity : Float = 0.6
+    var mycolour = UIColor.black
+    
+    override func layoutSubviews() {
+        layer.cornerRadius = self.CornerRadius
+        layer.shadowColor = self.mycolour.cgColor
+        layer.shadowOffset  = CGSize(width: self.ofsetWidth, height: self.ofsethHight)
+        layer.shadowPath = UIBezierPath(roundedRect: bounds, cornerRadius: cornerRadius).cgPath
+        layer.shadowOpacity = self.ofsethShadowOpacity
+        
+    }
+    
+}

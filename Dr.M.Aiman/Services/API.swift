@@ -44,14 +44,11 @@ class API : NSObject {
             }
     }
     
-    //MARK:  --------- upload user Image
-    class func uploadUserImage ( image : UIImage , completion : @escaping( _ error : Error? , _ success : Int? , _ message : String? ,_ imageURL : String? ) ->Void) {
+    //MARK:  --------- upload image Multipart
+    class func uploadUserImageMultipart ( image : UIImage , completion : @escaping( _ error : Error? , _ success : Int? , _ message : String? ,_ imageURL : String? ) ->Void) {
         
         let url = URLs.SaveUserImage
-        //"X-Requested-With" : "XMLHttpRequest"  ,
-//        , "Authorization" : Helper.getAccessToken()
         let header : HTTPHeaders = ["content-type" : "image/png" ]
-        
         let images = ["file" : image ]
         
         Alamofire.upload(multipartFormData: { multipartFormData in
@@ -86,10 +83,11 @@ class API : NSObject {
                     case .success(let value) :
                         let json = JSON(value)
                         // let jsonUser = json["user"]
-                        print("Multipart json = \(json)")
+                        print("multipart user image = \(json)")   //OK
                         
                         completion(nil , 0 , "Uplouded successfully" , json.string! )
-                    
+                        Helper.setUserImage(user_imagee:json.string!)
+
                     case .failure(let error) :
                         completion(error , -1  , "\(error)" , nil)
                     }
@@ -104,6 +102,65 @@ class API : NSObject {
         })
         //        }
     }
+    
+    //MARK: save User image
+    enum newimageEnum {
+        case profileImage
+        case coverImage
+    }
+    
+    class func  updateImage (type: newimageEnum, Image : String, completion : @escaping (_ error : Error? , _ status : Int ,_ message : String? ) ->Void) {
+        
+
+        let header = [ "content-type" : "application/json"  , "Authorization" : Helper.getAccessToken() ]
+        var url : String
+        var jsonString : [String : Any]
+        
+        switch type {
+        case.profileImage:
+             url = URLs.updateUserImage
+            jsonString = ["Image" : Image]
+        case.coverImage:
+            url = URLs.uodateUserCover
+            jsonString = ["Image" : Image]
+        }
+        
+        Alamofire.request(url, method: .post, parameters: jsonString , encoding: JSONEncoding.default, headers: header)
+            .validate(statusCode: 200..<500)
+            .responseJSON{ response in
+                switch response.result {
+                case .failure(let error) :
+                    completion(error , 1  , "Failed" )
+                case .success(let value) :
+                    let json = JSON(value)
+                    print(json)
+
+                    
+                    print("updated image json\(json)")
+
+                   
+                    
+                    if json["Status"] == 0 {
+
+                        switch type {
+                        case .profileImage:
+                            Helper.setUserImage(user_imagee: json["Image"].string ?? "")
+                        case .coverImage:
+                            Helper.setUserCover(user_imagee: json["Image"].string ?? "")
+                        }
+                        
+                        completion(nil , 0 ,json["Message"].string ?? "")
+                        
+                    } else {
+                        completion(nil , -1 ,json["error_description"].string ?? "")
+                        
+                    }
+                }
+            }
+    }
+    
+    
+    
     
     //    //MARK: VerifyCodeByMail
     //    /// -------------------- Verify phone Number  -------------
@@ -138,8 +195,6 @@ class API : NSObject {
     class func  userLogin ( Email : String, MacAdress : String, Password : String , completion : @escaping (_ error : Error? , _ status : Int ,_ message : String? , _ token : String?) ->Void) {
         
         let jsonString = ["Email" : Email,"MacAdress" : MacAdress,"Password" : Password ]
-        //        let header = [ "content-type" : "application/json"  , "Authorization" : Helper.getAccessToken() ]
-        
         let url = URLs.Login
         
         Alamofire.request(url, method: .post, parameters: jsonString , encoding: JSONEncoding.default, headers: nil)
@@ -154,6 +209,7 @@ class API : NSObject {
                     
                     if json["Status"] == 0 {
                         Helper.setAccessToken(access_token: "Bearer \(json["access_token"].string ?? "" )")
+                        
                         
                         completion(nil , 0 ,json["Message"].string ?? "", json["access_token"].string ?? "")
                         
@@ -185,10 +241,15 @@ class API : NSObject {
                     if json["Status"] == 0 {
                         Helper.setUserData(Id: json["Response"]["Id"].string ?? "",
                                            Email:  json["Response"]["Email"].string ?? "",
-                                           PhoneNumber:  json["Response"]["PhoneNumber"].string ?? "", FirstName:  json["Response"]["FirstName"].string ?? "", Image:  json["Response"]["Image"].string ?? "",
+                                           PhoneNumber:  json["Response"]["PhoneNumber"].string ?? "", FirstName:  json["Response"]["FirstName"].string ?? "", Image:  json["Response"]["Image"].string ?? "", Cover: json["Response"]["Cover"].string ?? "",
                                            Gender:  json["Response"]["Gender"].bool ?? true,
                                            RoleName:  json["Response"]["RoleName"].string ?? ""
                         )
+                        print ("  info --> image :: \(json["Response"]["Image"].string ?? "")")
+                        print ("  info --> cover :: \(json["Response"]["Cover"].string ?? "")")
+
+                        Helper.setUserImage(user_imagee: "\(json["Response"]["Image"].string ?? "")")
+                        Helper.setUserCover(user_imagee: "\(json["Response"]["Cover"].string ?? "")")
                         completion(nil , 0 ,json["Message"].string ?? "")
                         
                     } else {
@@ -223,7 +284,7 @@ class API : NSObject {
                             
                             Helper.setUserData(Id: Helper.getId(),
                                                Email:  Email ,
-                                               PhoneNumber:  PhoneNumber , FirstName: FirstName , Image: Helper.getImage(),
+                                               PhoneNumber:  PhoneNumber , FirstName: FirstName , Image: Helper.getUserImage(), Cover: Helper.getUserCover(),
                                                Gender:  Helper.getGender(),
                                                RoleName:  Helper.getRoleName()
                             )
@@ -584,8 +645,8 @@ class API : NSObject {
     /// -------------------- Add Post -------------
     class func  addPost ( text : String? , Image : String? , completion : @escaping (_ error : Error? , _ status : Int ,_ message : String? ) ->Void) {
         
-        let Parameter = ["text" : text ,"Image" : Image ]
-        let header    = [ "content-type" : "application/json"  , "Authorization" : Helper.getAccessToken() ]
+        let Parameter : [String : Any] = ["text" : text! ,"Image" : Image! ]
+        let header : HTTPHeaders  = [ "content-type" : "application/json"  , "Authorization" : Helper.getAccessToken() ]
         
         let url = URLs.AddPost
         

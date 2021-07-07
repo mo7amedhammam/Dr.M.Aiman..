@@ -67,7 +67,11 @@ class NewPostVC: UIViewController {
     }
     
     @IBAction func PostBtnPressed(_ sender: Any) {
+        if NewPostImage.image == nil && (NewPostText.text == "" || NewPostText.text.isEmpty){
+            HUD.flash(.label("Empty Post Not Allowed"), delay: 2.0)
+        }else{
         addPostWithImage()
+    }
     }
     
     func addPostWithImage() {

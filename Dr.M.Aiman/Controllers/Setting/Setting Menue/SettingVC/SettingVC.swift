@@ -11,18 +11,17 @@ import PKHUD
 class SettingVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
     
     @IBOutlet weak var SettingTVOutlet: UITableView!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         tableviewSetup()
-        settingLabelNames.remove(at: [1,3,4])
-        logoImage.remove(at: [1,3,4])
-
-        //        self.navigationItem.title = "Settings"
+        settingLabelNames.remove(at: [1,3,4,5,6])
+        logoImage.remove(at: [1,3,4,5,6])
     }
     
     
     var settingLabelNames = ["Edit Profile","Chat","PDF Files","Contact Us","About Us","Share App","Rate App","Sign Out"]
-    
+
     var logoImage: [UIImage] = [
         UIImage(systemName: "square.and.pencil")!,
         UIImage(systemName: "message")!,
@@ -33,12 +32,19 @@ class SettingVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
         UIImage(systemName: "star.fill")!,
         UIImage(systemName: "arrow.left.square.fill")!
     ]
-    //    var vcontrollers:[Any] = [ProfileVC()EditProfileVC(),ChatVC(),ContactUsVC(),AboutUsVC(),ShareAppVC(),RateAppVC(),SignOutVC()]
+
+//    var settingLabelNames = ["Edit Profile","PDF Files","Sign Out"]
+//
+//    var logoImage: [UIImage] = [
+//        UIImage(systemName: "square.and.pencil")!,
+//        UIImage(systemName: "doc.fill")!,
+//        UIImage(systemName: "arrow.left.square.fill")!
+//    ]
+
     
     func tableviewSetup() {
         SettingTVOutlet.dataSource = self
         SettingTVOutlet.delegate = self
-        //        SettingTVOutlet.registerCellNib(cellClass: SettingTVCell.self)
         
     }
     
@@ -62,6 +68,13 @@ class SettingVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
     }
     
     
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        if indexPath.row == 0{
+            
+        }else{
+        move(id: settingLabelNames[indexPath.row-1] )
+    }
+    }
     
     
     
@@ -84,6 +97,8 @@ class SettingVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
             print("share")
         } else if id == "Rate App" {
             print("rate")
+        } else if id == "Sign Out" {
+                logout()
         } else {
             print("push from here")
             let vc = (storyboard?.instantiateViewController(withIdentifier: id))!

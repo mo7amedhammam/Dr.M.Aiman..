@@ -24,7 +24,6 @@ class EditProfileVC: UIViewController {
     
     @IBOutlet weak var popupfrontview: UIView!
     
-    
     @IBOutlet var popupViewOut: UIView!
     @IBOutlet weak var popUpLabel: UILabel!
     @IBOutlet weak var popUpTextFeild: UITextField!
@@ -46,10 +45,16 @@ class EditProfileVC: UIViewController {
         LAname.text       = Helper.getFirstName()
         TFemail.text      = Helper.getEmail()
         TFphone.text      = Helper.getPhoneNumber()
+        Helper.SetImage(EndPoint: Helper.getUserImage(), image: profileImage, name: "person.fill", status: 1)
+        Helper.SetImage(EndPoint: Helper.getUserCover(), image: coverImage, name: "person.fill", status: 1)
+        
+        print("image >>>>>>>. \(URLs.ImageBaseURL+Helper.getUserImage())")
+        print("cover >>>>>>>. \(URLs.ImageBaseURL+Helper.getUserCover())")
+
         TFuniversity.text = "Menofia"
         TFrole.text       = "\(Helper.getGender())"
         TFpasword.text    = Helper.getPasswordSave()
-        
+        print(" image : \(Helper.getImage())")
         print(" name : \(Helper.getFirstName())")
         print(" email : \(Helper.getEmail())")
         print(" phone : \(Helper.getPhoneNumber())")
@@ -60,13 +65,13 @@ class EditProfileVC: UIViewController {
     var imageindex = 0
     @IBAction func coveImageBtnPressed(_ sender: Any) {
         showPhotoMenu()
-        imageindex = 0
+        imageindex = 1
 //        coverImage.image = image
     }
     
     @IBAction func profileImageBtnPressed(_ sender: Any) {
         showPhotoMenu()
-        imageindex = 1
+        imageindex = 0
         
     }
     
@@ -75,10 +80,13 @@ class EditProfileVC: UIViewController {
         
         picker.dismiss(animated: true, completion: nil)
         guard let image = info[.editedImage] as? UIImage else { return }
-        if imageindex == 0 {
+        if imageindex == 1 {
             coverImage.image = image
+            updateUserImage(type: .coverImage)
+            imageindex = 0
         } else {
             profileImage.image = image
+            updateUserImage(type: .profileImage)
         }
     }
     
@@ -155,8 +163,8 @@ class EditProfileVC: UIViewController {
             HUD.flash(.label("No Internet Connection"))
         }
     }
-    
 
+    
     @IBAction func saveBtnPressed(_ sender: Any) {
         let newtext = popUpTextFeild.text!
         self.setNewValue(receiverTag: tag , value: newtext)
@@ -197,6 +205,72 @@ class EditProfileVC: UIViewController {
         //        print(x)
     }
     
+    
+    //MARK: -------  upload User Image  -------
+    func updateUserImage(type: API.newimageEnum) {
+        let image : UIImage
+        switch type {
+        case.profileImage:
+            image = profileImage.image!
+        case.coverImage:
+            image = coverImage.image!
+        }
+        
+        if Reachable.isConnectedToNetwork(){
+            HUD.show(.labeledProgress(title: "Updating Image", subtitle: nil))
+            API.uploadUserImageMultipart(image: image) { (error : Error?, status : Int?, message : String? ,imageEndPoint : String?) in
+                if error == nil && status == 0 {
+                    if status != 0 {
+                        HUD.hide(animated: true, completion: nil)
+                        HUD.flash(.label("Not updated"), delay: 2.0)
+                    }else{
+                        print("\(URLs.ImageBaseURL+imageEndPoint!)")
+                        
+                        self.saveNewImage(type: type, image: "\(imageEndPoint!)")
+                        HUD.hide()
+                    }
+                } else  if  error == nil && status == -1 {
+                    HUD.hide(animated: true, completion: nil)
+                    HUD.flash(.label(message), delay: 2.0)
+                }else {
+                    HUD.hide(animated: true, completion: nil)
+                    HUD.flash(.label("Server Error"), delay: 2.0)
+                }
+            }
+        } else {
+            HUD.flash(.labeledError(title: "No Internet Connection", subtitle: "") , delay: 2.0)
+        }
+    }
+    
+    //MARK: ---- save new image
+    
+    func saveNewImage(type: API.newimageEnum, image : String){
+        if Reachable.isConnectedToNetwork(){
+            API.updateImage(type: type, Image: image) { (error : Error?, status : Int, message : String?) in
+                if error == nil && status == 0 {
+                    if status != 0 {
+                        HUD.hide(animated: true, completion: nil)
+                        HUD.flash(.label("Not updated"), delay: 2.0)
+                    }else{
+                        print("new saved image :;;;;;  \(image)")
+                        HUD.flash(.label("image updated"), delay: 2.0)
+                        
+                        HUD.hide()
+                    }
+                } else  if  error == nil && status == -1 {
+                    HUD.hide(animated: true, completion: nil)
+                    HUD.flash(.label(message), delay: 2.0)
+                }else {
+                    HUD.hide(animated: true, completion: nil)
+                    HUD.flash(.label("Server Error"), delay: 2.0)
+                }
+            }
+        }else{
+            HUD.flash(.labeledError(title: "no internet connection", subtitle: nil))
+        }
+    }
+    
+    
     func showPopUp(pop:UIView) {
         self.view.addSubview(pop)
         pop.center    = self.view.center
@@ -222,24 +296,7 @@ class EditProfileVC: UIViewController {
     }
     
     
-//
-//
-//    // Pass Image To Your ImageView
-//    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
-//
-//        picker.dismiss(animated: true, completion: nil)
-//        guard let image = info[.editedImage] as? UIImage else { return }
-//        if AddIndex == 0 {
-//            frontImageOut.isHidden = false
-//            frontImageOut.image = image
-//            DeletFrontImageOut.isHidden = false
-//        } else {
-//            backimageout.isHidden = false
-//            backimageout.image = image
-//            DeleteBackImageOut.isHidden = false
-//        }
-//    }
-    
+
     
 }
 

@@ -8,6 +8,7 @@
 import UIKit
 import IQKeyboardManagerSwift
 import PKHUD
+import ImageViewer_swift
 
 class LiveVC : UIViewController {
     
@@ -27,10 +28,18 @@ class LiveVC : UIViewController {
     var ArrLive = [PostModel]()
     let refreshControl = UIRefreshControl()
     
+    override func viewWillAppear(_ animated: Bool) {
+        self.ArrLive.removeAll()
+        self.GetLive(Type: "live", Refresh: "reload")
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         print(":::::::::::: \(Helper.getRoleName())")
+        print(ArrLive.count)
+        print(ArrLive)
+        print(Helper.getImage())
         
         if Helper.getRoleName() == "Student"{
             self.navigationItem.rightBarButtonItem = nil
@@ -50,22 +59,19 @@ class LiveVC : UIViewController {
        self.GetLive(Type: "live", Refresh: "refresh")
    }
     
-    override func viewWillAppear(_ animated: Bool) {
-        self.ArrLive.removeAll()
-        self.GetLive(Type: "live", Refresh: "reload")
-    }
-    
-    @IBAction func RefreshBtn(_ sender: Any) {
-        if self.ArrLive.isEmpty == false && LiveTV.isHidden{
-            self.LiveTV.isHidden = false
-            self.ArrLive.removeAll()
-            self.refreshControl.beginRefreshing()
-            self.GetLive(Type: "live", Refresh: "refresh")
-        }else {
-            HUD.flash(.labeledError(title: "No Lives Found ", subtitle: ""), delay: 1)
-        }
-        
-    }
+
+//
+//    @IBAction func RefreshBtn(_ sender: Any) {
+//        if self.ArrLive.isEmpty == false && LiveTV.isHidden{
+//            self.LiveTV.isHidden = false
+//            self.ArrLive.removeAll()
+//            self.refreshControl.beginRefreshing()
+//            self.GetLive(Type: "live", Refresh: "refresh")
+//        }else {
+//            HUD.flash(.labeledError(title: "No Lives Found ", subtitle: ""), delay: 2)
+//        }
+//
+//    }
     
     
     //---------- Get All Lives -----
@@ -82,13 +88,13 @@ class LiveVC : UIViewController {
                 if error == nil && info != nil  {
                     if info!.isEmpty {
                         self.showAlert(message: "No Content To show")
-                        LiveTV.isHidden = true
+//                        LiveTV.isHidden = true
                         HUD.hide(animated: true)
                     } else {
                         for data in info! {
                             self.ArrLive.append(data)
-                            LiveTV.isHidden = false
                         }
+//                        LiveTV.isHidden = false
                         LiveTV.reloadData()
                         HUD.hide(animated: true)
                         self.refreshControl.endRefreshing()
@@ -132,10 +138,10 @@ class LiveVC : UIViewController {
                     HUD.flash(.labeledSuccess(title: "Added", subtitle: ""), delay: 1.0)
                     self.hidePopUp(pop: self.popupViewOut)
                     //                    self.viewDidLoad()
-                    if self.LiveTV.isHidden == true{
-                        self.LiveTV.isHidden = false
-                        // -> empty array object
-                    }
+//                    if self.LiveTV.isHidden == true{
+//                        self.LiveTV.isHidden = false
+//                        // -> empty array object
+//                    }
                     self.ArrLive.removeAll()
                     self.viewDidLoad()
                 } else if error == nil && status == -1 {
@@ -154,8 +160,6 @@ class LiveVC : UIViewController {
 
 
 extension LiveVC : UITableViewDataSource , UITableViewDelegate , LiveActionDelegate {
-    
-    
     
     func Favourite(id : Int , reactType : Int , index : Int , LCount : UILabel){
         // add or remove React
@@ -236,14 +240,15 @@ extension LiveVC : UITableViewDataSource , UITableViewDelegate , LiveActionDeleg
                             self.LiveTV.deleteRows(at: [deleteIndex] , with: .fade)
                             //                                self.showAlert(message: "Deleted")
                             HUD.flash(.labeledSuccess(title: "Deleted", subtitle: ""), delay: 1.0)
-                            if self.ArrLive.isEmpty {
-                                self.LiveTV.isHidden = true
-                            } else {
-                                self.LiveTV.reloadData()
-                            }
+//                            if self.ArrLive.isEmpty {
+//                                self.LiveTV.isHidden = true
+//                            } else {
+//                                self.LiveTV.reloadData()
+//                            }
                             //                                self.ArrLive.count -= 1
                             //                                self.GetLive()
                             
+                            LiveTV.reloadData()
                         } else if error == nil && status == -1 {
                             self.showAlert(message: message!)
                         } else {
@@ -275,13 +280,12 @@ extension LiveVC : UITableViewDataSource , UITableViewDelegate , LiveActionDeleg
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "LiveTVCell") as! LiveTVCell
         
-        //        cell.cellMainLabel.text = ArrLive[indexPath.row].Detailes
         
         cell.delegate = self
         cell.indexx = indexPath.row
         cell.deleteIndex = indexPath
-        cell.status = ArrLive[indexPath.row].ReactType
-        cell.postId = ArrLive[indexPath.row].Id
+//        cell.status = ArrLive[indexPath.row].ReactType
+//        cell.postId = ArrLive[indexPath.row].Id
         
         if Helper.getRoleName() == "Student" {
             cell.BtnMore.isHidden  = true
@@ -289,9 +293,13 @@ extension LiveVC : UITableViewDataSource , UITableViewDelegate , LiveActionDeleg
             cell.BtnMore.isHidden  = false
         }
         
-        cell.cellMainLabel.text   = "Adminstrator"
-        cell.TimeLabel.text       = ArrLive[indexPath.row].CreationDate
+
+        
+        cell.cellMainLabel.text   = ArrLive[indexPath.row].FirstName
+        cell.TimeLabel.text       = ArrLive[indexPath.row].CreationTime
         cell.WatchinNumberLa.text = "\(ArrLive[indexPath.row].ReactCount)"
+        Helper.SetImage(EndPoint: "\(ArrLive[indexPath.row].UserImage)", image: cell.cellImage, name: "person.fill" , status: 0)
+        cell.cellImage.setupImageViewer()
         
         cell.PostLa.text = ArrLive[indexPath.row].Detailes
         let vidurl       =  URL( string: ArrLive[indexPath.row].Title)

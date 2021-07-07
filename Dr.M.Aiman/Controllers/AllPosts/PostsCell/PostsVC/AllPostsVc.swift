@@ -30,11 +30,11 @@ class AllPostsVc: UIViewController  {
     @IBOutlet weak var IVEditComment: UIImageView!
     @IBOutlet weak var TVeditComment: UITextView!
     var EditId = 0
-        
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view.
-                
+        self.navigationItem.rightBarButtonItem = nil
+        
         
         //        let isoDate = "2016-04-14T10:44:00+0000"
         //
@@ -92,6 +92,11 @@ class AllPostsVc: UIViewController  {
         self.GetPosts(Type: "refresh")
     }
     
+    
+    @IBAction func BURefreshEmpty(_ sender: Any) {
+        self.GetPosts(Type: "reload")
+    }
+    
     override func viewWillAppear(_ animated: Bool) {
         self.pinArr.removeAll()
         self.postArray.removeAll()
@@ -124,9 +129,6 @@ class AllPostsVc: UIViewController  {
                         self.AllPostsTV.isHidden = true
                     }else{
                         for data in info! {
-                            if self.AllPostsTV.isHidden == true{
-                                self.AllPostsTV.isHidden = false
-                            }
                             //                            if data.IsPinPost == true {
                             //                                self.pinArr.append(data)
                             //                            } else {
@@ -140,7 +142,9 @@ class AllPostsVc: UIViewController  {
                                 postArray.append(data)
                             }
                         }
-                        
+                        print("/////////////////////")
+                        print(postArray)
+                        AllPostsTV.isHidden = false
                         pinedpostIndex = 0
                         self.AllPostsTV.reloadData()
                         HUD.hide(animated: true, completion: nil)
@@ -478,7 +482,7 @@ extension AllPostsVc : UITableViewDataSource , UITableViewDelegate , PostActionD
     
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return postArray.count
+        return postArray.count+1
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -525,10 +529,7 @@ extension AllPostsVc : UITableViewDataSource , UITableViewDelegate , PostActionD
                 Helper.SetImage(EndPoint: "\(postArray[indexPath.row - 1].Image)", image: cell.PostImage! , name: "person.fill" , status: 0)
             }
             
-            
-            
-            
-            Helper.SetImage(EndPoint: "\(postArray[indexPath.row - 1].UserImage)", image: cell.cellImage!, name: "person.fill" , status: 0)
+            Helper.SetImage(EndPoint: postArray[indexPath.row - 1].UserImage, image: cell.cellImage!, name: "person.fill" , status: 0)
             cell.PostImage.setupImageViewer()
             
             return cell

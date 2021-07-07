@@ -170,16 +170,22 @@ class ClientSignUPVC: UIViewController {
         
         if Reachable.isConnectedToNetwork(){
             HUD.show(.labeledProgress(title: "Creating Profile", subtitle: ""))
-            API.uploadUserImage(image: IVAddUser.image!) { (error : Error?, status : Int?, message : String? ,imageEndPoint : String?) in
+            API.uploadUserImageMultipart(image: IVUser.image!) { (error : Error?, status : Int?, message : String? ,imageEndPoint : String?) in
                 if error == nil && status == 0 {
                     if status != 0 {
                         HUD.hide(animated: true, completion: nil)
                         HUD.flash(.label("Not Created"), delay: 2.0)
                     }else{
-                        
-                        self.registerUser(imageurlString : "\(imageEndPoint!)")
                         print("\(URLs.ImageBaseURL+imageEndPoint!)")
-                        
+
+                        if self.IVUser.image != nil {
+                            
+                        self.registerUser(imageurlString : "\(imageEndPoint!)")
+                        } else{
+                            print("******  nil image *****")
+                            
+                            self.registerUser(imageurlString : "")
+                        }
                     }
                 } else  if  error == nil && status == -1 {
                     HUD.hide(animated: true, completion: nil)
@@ -194,6 +200,10 @@ class ClientSignUPVC: UIViewController {
         }
     }
     
+    
+    
+    
+    
     //MARK: register new user
     func registerUser( imageurlString : String)  {
         
@@ -201,6 +211,12 @@ class ClientSignUPVC: UIViewController {
             if error == nil && status == 0 {
                 HUD.hide(animated: true)
                 HUD.flash(.label(message!) , delay: 2)
+                print("---------- user created ---------")
+                print("---------- with image --------- \(imageurlString)")
+
+                
+                Helper.setUserImage(user_imagee: imageurlString)
+                
                 self.dismiss(animated: true, completion: nil)
             } else  if  error == nil && status == -1 {
                 HUD.flash(.label(message), delay: 2.0)

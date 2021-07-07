@@ -16,6 +16,7 @@ class PostBodyXibCell: UITableViewCell {
     @IBOutlet weak var statusLa: UILabel!
     @IBOutlet weak var photoImage: UIImageView!
     @IBOutlet weak var photoLa: UILabel!
+    
     @IBOutlet weak var ViewImageFounded: UIView!
     
 
