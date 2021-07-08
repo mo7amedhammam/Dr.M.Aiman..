@@ -24,6 +24,7 @@ class LiveVC : UIViewController {
     
     
     var Id = 0
+    var pagenum = 0
     var ArrLive = [PostModel]()
     let refreshControl = UIRefreshControl()
     
@@ -42,12 +43,14 @@ class LiveVC : UIViewController {
         LiveTV.delegate = self
         
         refreshControl.attributedTitle = NSAttributedString(string: "Refresh")
-        refreshControl.addTarget(self, action: #selector(self.refresh(_:)), for: .valueChanged)
+        refreshControl.addTarget(self, action: #selector(refresh), for: .valueChanged)
         LiveTV.addSubview(refreshControl)
    
    }
     
-   @objc func refresh(_ sender: AnyObject) {
+   @objc func refresh() {
+//    LiveTV.refreshControl?.beginRefreshing()
+    
       // Code to refresh table view
        self.ArrLive.removeAll()
        self.GetLive(Type: "live", Refresh: "refresh")
@@ -74,26 +77,49 @@ class LiveVC : UIViewController {
         if Refresh == "reload" {
             HUD.show(.progress)
         } else {
+//            LiveTV.refreshControl?.beginRefreshing()
             self.refreshControl.beginRefreshing()
         }
         if Reachable.isConnectedToNetwork(){
             API.GetAllPosts(Type : Type , pageNum : 0) { [self] (error : Error?, info : [PostModel]?, message : String?) in
-                //                HUD.show(.progress)
+             
+//                if  error == nil && info != nil {
+//                    self.ArrLive = info!
+//                    LiveTV.refreshControl?.endRefreshing()
+////                    self.refreshControl.endRefreshing()
+//                    HUD.hide(animated: true)
+//
+//                    self.LiveTV.reloadData()
+//                } else if error != nil && info == nil {
+//                    HUD.hide(animated: true)
+//
+//                    if ArrLive.count < 1{
+//                    self.showAlert(message: "No Content To show")
+//                    }
+//                } else{
+//                    HUD.hide(animated: true)
+//
+//                    self.showAlert(message: "Server Error")
+//                }
+//                HUD.hide(animated: true)
+                
+                
                 if error == nil && info != nil  {
                     if info!.isEmpty {
                         self.showAlert(message: "No Content To show")
 //                        LiveTV.isHidden = true
                         HUD.hide(animated: true)
                     } else {
+
                         for data in info! {
                             self.ArrLive.append(data)
                         }
-//                        LiveTV.isHidden = false
-                        LiveTV.reloadData()
+                        //  LiveTV.isHidden = false
                         HUD.hide(animated: true)
                         self.refreshControl.endRefreshing()
                     }
-                    
+                    LiveTV.reloadData()
+
                 } else if error == nil && info == nil {
                     HUD.flash(.label(message), delay: 2.0)
                     HUD.hide(animated: true)
@@ -120,11 +146,7 @@ class LiveVC : UIViewController {
     }
     
     func AddLive(){
-        let NewVideoUrl = VideoUrl.text!
-        let NewVideoDescription = Videodescribtion.text!
-        
-        print("url :: \(NewVideoUrl)  desc :: \(NewVideoDescription)")
-        
+      
         API.addNewLive(Title: VideoUrl.text!, Detailes: Videodescribtion.text! ) { (error : Error?, status : Int? , message : String? ) in
             if Reachable.isConnectedToNetwork(){
                 if error == nil && status == 0  {
@@ -148,8 +170,6 @@ class LiveVC : UIViewController {
             }
         }
     }
-    
-    
 }
 
 
@@ -271,10 +291,16 @@ extension LiveVC : UITableViewDataSource , UITableViewDelegate , LiveActionDeleg
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return ArrLive.count
     }
+    
+    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        if indexPath.row == ArrLive.count - 1{
+            pagenum += 1
+            GetLive(Type: "live", Refresh: "reload")
+        }
+    }
+    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        tableView.register(UINib(nibName: "PostBodyXibCell", bundle: nil), forCellReuseIdentifier: "PostBodyXibCell")
-        let cell = tableView.dequeueReusableCell(withIdentifier: "PostBodyXibCell") as! LiveTVCell
-        
+        let cell = tableView.dequeueReusableCell(withIdentifier: "LiveTVCell") as! LiveTVCell
         
         cell.delegate = self
         cell.indexx = indexPath.row
@@ -288,8 +314,9 @@ extension LiveVC : UITableViewDataSource , UITableViewDelegate , LiveActionDeleg
             cell.BtnMore.isHidden  = false
         }
         
-        cell.cellMainLabel.text   = ArrLive[indexPath.row].FirstName
-        cell.TimeLabel.text       = "\(ArrLive[indexPath.row].CreationTime)"
+        cell.cellMainLabel.text   = "\(ArrLive[indexPath.row].FirstName)"
+        // no creationTime in Lives
+        cell.TimeLabel.text       = "\(ArrLive[indexPath.row].CreationDate)"
         cell.WatchinNumberLa.text = "\(ArrLive[indexPath.row].ReactCount)"
         Helper.SetImage(EndPoint: "\(ArrLive[indexPath.row].UserImage)", image: cell.cellImage, name: "person.fill" , status: 0)
         cell.cellImage.setupImageViewer()

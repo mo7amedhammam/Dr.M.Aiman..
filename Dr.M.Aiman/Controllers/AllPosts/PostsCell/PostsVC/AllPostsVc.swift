@@ -33,6 +33,7 @@ class AllPostsVc: UIViewController  {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        AllPostsTV.register(UINib(nibName: "PostBodyXibCell", bundle: nil), forCellReuseIdentifier: "PostBodyXibCell")
         self.navigationItem.rightBarButtonItem = nil
         
         
@@ -64,7 +65,7 @@ class AllPostsVc: UIViewController  {
         
         //        self.GetPosts(Type: "reload")
         refreshControl.attributedTitle = NSAttributedString(string: "Refresh")
-        refreshControl.addTarget(self, action: #selector(self.refresh(_:)), for: .valueChanged)
+        refreshControl.addTarget(self, action: #selector(self.refresh), for: .valueChanged)
         AllPostsTV.addSubview(refreshControl)
         
         //        self.AllPostsTV.addObserver(self, forKeyPath: "contentSize", options: .new, context: nil)
@@ -85,7 +86,7 @@ class AllPostsVc: UIViewController  {
     //         }
     //     }
     
-    @objc func refresh(_ sender: AnyObject) {
+    @objc func refresh() {
         // Code to refresh table view
         self.pinArr.removeAll()
         self.postArray.removeAll()
@@ -94,7 +95,8 @@ class AllPostsVc: UIViewController  {
     
     
     @IBAction func BURefreshEmpty(_ sender: Any) {
-        self.GetPosts(Type: "reload")
+        self.postArray.removeAll()
+        self.GetPosts(Type: "refresh")
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -128,6 +130,10 @@ class AllPostsVc: UIViewController  {
                         HUD.flash(.label("No Content To Show"), delay: 2.0)
                         self.AllPostsTV.isHidden = true
                     }else{
+                        
+                        HUD.hide(animated: true, completion: nil)
+                        self.refreshControl.endRefreshing()
+
                         for data in info! {
                             //                            if data.IsPinPost == true {
                             //                                self.pinArr.append(data)
@@ -142,14 +148,12 @@ class AllPostsVc: UIViewController  {
                                 postArray.append(data)
                             }
                         }
-                        print("/////////////////////")
-                        print(postArray)
-                        AllPostsTV.isHidden = false
                         pinedpostIndex = 0
+                        AllPostsTV.isHidden = false
+//                        HUD.hide(animated: true, completion: nil)
+//                        self.refreshControl.endRefreshing()
                         self.AllPostsTV.reloadData()
-                        HUD.hide(animated: true, completion: nil)
-                        self.refreshControl.endRefreshing()
-                        
+
                         
                         //                        self.pinArr.append(contentsOf: postArray)
                         //                        self.postArray = self.pinArr
@@ -264,12 +268,7 @@ class AllPostsVc: UIViewController  {
     @IBAction func BUCancelComment(_ sender: Any) {
         ViewEditComment.isHidden = true
     }
-    
-    
-    
-    
-    
-    
+
 }
 
 extension AllPostsVc : UITableViewDataSource , UITableViewDelegate , PostActionDelgate , PostActionNewPostDelgate {
@@ -339,9 +338,27 @@ extension AllPostsVc : UITableViewDataSource , UITableViewDelegate , PostActionD
         
     }
     
+    
+        
+    
+    
     func MoreFun(index: Int , PostLa : UILabel , deleteIndex : IndexPath) {
         
-        
+        func PinOrUnpin(index : Int){
+        API.addOrRemovePinPost(PostId: self.postArray[index].Id) { (error : Error?, status : Int, message : String?) in
+            if error == nil && status == 0{
+                HUD.flash(.label(message!), delay: 2.0)
+                HUD.hide()
+            }  else if error == nil && status == -1 {
+                HUD.flash(.label(message!), delay: 2.0)
+                HUD.hide()
+            } else {
+                HUD.flash(.labeledError(title: nil , subtitle: " Server Error ") , delay: 3)
+                HUD.hide()
+            }
+            
+        }
+        }
         
         let optionMenu = UIAlertController(title: nil, message: nil , preferredStyle: .actionSheet)
         
@@ -371,19 +388,16 @@ extension AllPostsVc : UITableViewDataSource , UITableViewDelegate , PostActionD
                                         { [self]
                                             (alert: UIAlertAction!) -> Void in
                                             // action
-                                            API.addOrRemovePinPost(PostId: self.postArray[index - 1].Id) { (error : Error?, status : Int, message : String?) in
-                                                if error == nil && status == 0{
-                                                    HUD.flash(.label(message!), delay: 2.0)
-                                                    HUD.hide()
-                                                }  else if error == nil && status == -1 {
-                                                    HUD.flash(.label(message!), delay: 2.0)
-                                                    HUD.hide()
-                                                } else {
-                                                    HUD.flash(.labeledError(title: nil , subtitle: " Server Error ") , delay: 3)
-                                                    HUD.hide()
-                                                }
-                                                
+                                            
+                                            //note: Pinned post must be inserted at index 0
+                                            if postArray[0].IsPinPost == true {
+                                                PinOrUnpin(index: 0)
+                                                PinOrUnpin(index: index - 1)
+                                            }else{
+                                                PinOrUnpin(index: index - 1)
                                             }
+                                           
+                                            
                                             
                                         })
         
@@ -492,14 +506,14 @@ extension AllPostsVc : UITableViewDataSource , UITableViewDelegate , PostActionD
             cell.delegate2 = self
             return cell
         } else {
-            tableView.register(UINib(nibName: "PostBodyXibCell", bundle: nil), forCellReuseIdentifier: "PostBodyXibCell")
+        
             let cell = tableView.dequeueReusableCell(withIdentifier: "PostBodyXibCell", for: indexPath) as! PostBodyXibCell
             
             cell.delegate = self
             cell.indexx = indexPath.row
             cell.deleteIndex = indexPath
-            cell.status = postArray[indexPath.row - 1].ReactType
-            cell.postId = postArray[indexPath.row - 1].Id
+//            cell.status = postArray[indexPath.row - 1].ReactType
+//            cell.postId = postArray[indexPath.row - 1].Id
             
             cell.cellMainLabel.text   = postArray[indexPath.row - 1].FirstName
             cell.LoveNumLaOutlet.text = "\(postArray[indexPath.row - 1].ReactCount)"

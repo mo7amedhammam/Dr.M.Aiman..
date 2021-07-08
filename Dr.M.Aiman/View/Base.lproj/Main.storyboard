@@ -405,7 +405,7 @@
                                                                                             <imageReference key="image" image="square.and.pencil" catalog="system" symbolScale="small"/>
                                                                                         </imageView>
                                                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Status" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Vk4-hh-3gJ">
-                                                                                            <rect key="frame" x="77.5" y="9" width="48.5" height="32.5"/>
+                                                                                            <rect key="frame" x="77.5" y="15" width="49" height="20"/>
                                                                                             <fontDescription key="fontDescription" name="DroidArabicKufi" family="Droid Arabic Kufi" pointSize="17"/>
                                                                                             <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                                                             <nil key="highlightedColor"/>
@@ -440,13 +440,13 @@
                                                                                     <rect key="frame" x="175.5" y="0.0" width="173.5" height="50"/>
                                                                                     <subviews>
                                                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Photo" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6S3-3d-uKf">
-                                                                                            <rect key="frame" x="74.5" y="9" width="44.5" height="32.5"/>
+                                                                                            <rect key="frame" x="74" y="15" width="45.5" height="20"/>
                                                                                             <fontDescription key="fontDescription" name="DroidArabicKufi" family="Droid Arabic Kufi" pointSize="17"/>
                                                                                             <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                                                             <nil key="highlightedColor"/>
                                                                                         </label>
                                                                                         <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="BAq-Jy-D4i">
-                                                                                            <rect key="frame" x="41.5" y="14.5" width="25" height="21"/>
+                                                                                            <rect key="frame" x="41" y="14.5" width="25" height="21"/>
                                                                                             <color key="tintColor" systemColor="systemGreenColor"/>
                                                                                             <constraints>
                                                                                                 <constraint firstAttribute="width" constant="25" id="BHX-w7-cS8"/>
@@ -4420,7 +4420,7 @@
                                                                 </connections>
                                                             </button>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Description" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="egS-X2-qwA">
-                                                                <rect key="frame" x="150" y="9" width="94" height="32.5"/>
+                                                                <rect key="frame" x="153.5" y="15" width="87" height="20"/>
                                                                 <fontDescription key="fontDescription" name="DroidArabicKufi-Bold" family="Droid Arabic Kufi" pointSize="17"/>
                                                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                                 <nil key="highlightedColor"/>
@@ -6834,7 +6834,7 @@
                                                         </connections>
                                                     </button>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Computer Sience" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="l71-JK-Jm9">
-                                                        <rect key="frame" x="141" y="22" width="132.5" height="30"/>
+                                                        <rect key="frame" x="140.5" y="22" width="133" height="30"/>
                                                         <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                         <constraints>
                                                             <constraint firstAttribute="height" constant="30" id="DBO-Fe-sWP"/>
@@ -7013,7 +7013,7 @@
                                                                                                 </userDefinedRuntimeAttributes>
                                                                                             </textField>
                                                                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="38Z-yA-p8W">
-                                                                                                <rect key="frame" x="264" y="2.5" width="70" height="35"/>
+                                                                                                <rect key="frame" x="264" y="7" width="70" height="26"/>
                                                                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                                                                 <constraints>
                                                                                                     <constraint firstAttribute="width" constant="70" id="W1e-Me-82y"/>
@@ -7566,10 +7566,10 @@
     </scenes>
     <designables>
         <designable name="BoR-gh-ptV">
-            <size key="intrinsicContentSize" width="334" height="50.96826171875"/>
+            <size key="intrinsicContentSize" width="334" height="39.988671874999994"/>
         </designable>
         <designable name="WDg-p2-akZ">
-            <size key="intrinsicContentSize" width="-1" height="49"/>
+            <size key="intrinsicContentSize" width="-1" height="37"/>
         </designable>
         <designable name="hVi-Ss-uLK">
             <size key="intrinsicContentSize" width="244" height="39.220703125"/>

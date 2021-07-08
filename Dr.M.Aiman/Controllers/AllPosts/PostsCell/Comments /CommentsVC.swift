@@ -82,9 +82,9 @@ class CommentsVC: UIViewController {
                         print(data.Id)
                         data.text  = text
                         data.Image = Image
-                        TV.reloadData()
                         HideView.isHidden = true
                         HUD.hide(animated: true, completion: nil)
+                        TV.reloadData()
                     }
                 }
      
@@ -237,11 +237,8 @@ class CommentsVC: UIViewController {
                 if status == 0 {
                     
                     self.ArrComm.remove(at: IndexPath.item)
-                    print(":::::::::::::::: \(IndexPath.item)")
-                    
-                    self.TVComments.reloadData()
-                    //                    self.reloadData()
                     HUD.hide()
+                    self.TVComments.reloadData()
                 } else {
                     HUD.flash(.labeledSuccess(title: message!, subtitle: ""), delay: 3)
                 }
@@ -284,7 +281,6 @@ class CommentsVC: UIViewController {
                         
                     }
                 } else  if  error == nil && info == nil{
-                    print("info = nil ")
                     HUD.flash(.label(message), delay: 2.0)
                 }else {
                     HUD.flash(.label("Server Error"), delay: 2.0)
@@ -311,15 +307,13 @@ extension CommentsVC : UITableViewDataSource , UITableViewDelegate {
         let cell = tableView.dequeueReusableCell(withIdentifier: "CommentsTVCell1", for: indexPath) as! CommentsTVCell
         cell.LaName.text    = ArrComm[indexPath.row].FirstName
         cell.LaComment.text = ArrComm[indexPath.row].text
-        cell.LaTimeAgo.text = "3 min "
+        cell.LaTimeAgo.text = ArrComm[indexPath.row].CreationTime
                 Helper.SetImage(EndPoint: ArrComm[indexPath.row].UserImage, image: cell.IVPerson, name: "2", status: 1)
         if ArrComm[indexPath.row].Image.isEmpty == true  || ArrComm[indexPath.row].Image == "" {
             cell.HeightViewImage.constant = 0
         } else {
             cell.HeightViewImage.constant = 100
             Helper.SetImage(EndPoint: ArrComm[indexPath.row].Image, image: cell.IVSubComment, name: "2", status: 1)
-            print("///////////// : \(ArrComm[indexPath.row].Image)")
-            
             cell.IVSubComment.setupImageViewer()
         }
         
@@ -375,7 +369,6 @@ extension CommentsVC : UITableViewDataSource , UITableViewDelegate {
                                 } else {
                                     AddCommentOnly(Type: "live", Id: ArrSuper.Id , text :  cell.TVAddComment.text , Img: "\(imageEndPoint!)")
                                 }
-                                print("image : \(URLs.ImageBaseURL+imageEndPoint!)")
                             } else  if  error == nil && status != 0 {
                                 HUD.flash(.label(message), delay: 2.0)
                             }else {
