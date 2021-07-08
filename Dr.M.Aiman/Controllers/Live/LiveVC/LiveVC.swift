@@ -49,11 +49,11 @@ class LiveVC : UIViewController {
    }
     
    @objc func refresh() {
-    LiveTV.reloadData()
+//    LiveTV.reloadData()
     
       // Code to refresh table view
-//       self.ArrLive.removeAll()
-//       self.GetLive(Type: "live", Refresh: "refresh")
+       self.ArrLive.removeAll()
+       self.GetLive(Type: "live", Refresh: "refresh")
    }
     
 
@@ -94,7 +94,7 @@ class LiveVC : UIViewController {
                         }
                         //  LiveTV.isHidden = false
                         HUD.hide(animated: true)
-//                        self.refreshControl.endRefreshing()
+                        self.refreshControl.endRefreshing()
                     }
 
                 } else if error == nil && info == nil {
@@ -104,6 +104,7 @@ class LiveVC : UIViewController {
                     self.showAlert(message: "Server Error")
                     HUD.hide(animated: true)
                 }
+                self.refreshControl.endRefreshing()
                 LiveTV.reloadData()
 
             }
@@ -306,9 +307,9 @@ extension LiveVC : UITableViewDataSource , UITableViewDelegate , LiveActionDeleg
         let vidurl       =  URL( string: ArrLive[indexPath.row].Title)
         cell.VideoViewOut.loadVideoURL(vidurl!)
      
-        if indexPath.row == ArrLive.count-1{
-            refreshControl.endRefreshing()
-        }
+//        if indexPath.row == ArrLive.count-1{
+//            refreshControl.endRefreshing()
+//        }
         return cell
         
     }
