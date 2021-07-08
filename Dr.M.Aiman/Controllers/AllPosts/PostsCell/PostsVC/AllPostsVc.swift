@@ -87,10 +87,11 @@ class AllPostsVc: UIViewController  {
     //     }
     
     @objc func refresh() {
+        AllPostsTV.reloadData()
         // Code to refresh table view
-        self.pinArr.removeAll()
-        self.postArray.removeAll()
-        self.GetPosts(Type: "refresh")
+//        self.pinArr.removeAll()
+//        self.postArray.removeAll()
+//        self.GetPosts(Type: "refresh")
     }
     
     
@@ -132,7 +133,7 @@ class AllPostsVc: UIViewController  {
                     }else{
                         
                         HUD.hide(animated: true, completion: nil)
-                        self.refreshControl.endRefreshing()
+//                        self.refreshControl.endRefreshing()
 
                         for data in info! {
                             //                            if data.IsPinPost == true {
@@ -546,6 +547,10 @@ extension AllPostsVc : UITableViewDataSource , UITableViewDelegate , PostActionD
             Helper.SetImage(EndPoint: postArray[indexPath.row - 1].UserImage, image: cell.cellImage!, name: "person.fill" , status: 0)
             cell.PostImage.setupImageViewer()
             
+            
+            if indexPath.row == postArray.count - 1{
+                refreshControl.endRefreshing()
+            }
             return cell
         }
     }

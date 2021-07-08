@@ -49,11 +49,11 @@ class LiveVC : UIViewController {
    }
     
    @objc func refresh() {
-//    LiveTV.refreshControl?.beginRefreshing()
+    LiveTV.reloadData()
     
       // Code to refresh table view
-       self.ArrLive.removeAll()
-       self.GetLive(Type: "live", Refresh: "refresh")
+//       self.ArrLive.removeAll()
+//       self.GetLive(Type: "live", Refresh: "refresh")
    }
     
 
@@ -77,32 +77,10 @@ class LiveVC : UIViewController {
         if Refresh == "reload" {
             HUD.show(.progress)
         } else {
-//            LiveTV.refreshControl?.beginRefreshing()
             self.refreshControl.beginRefreshing()
         }
         if Reachable.isConnectedToNetwork(){
             API.GetAllPosts(Type : Type , pageNum : 0) { [self] (error : Error?, info : [PostModel]?, message : String?) in
-             
-//                if  error == nil && info != nil {
-//                    self.ArrLive = info!
-//                    LiveTV.refreshControl?.endRefreshing()
-////                    self.refreshControl.endRefreshing()
-//                    HUD.hide(animated: true)
-//
-//                    self.LiveTV.reloadData()
-//                } else if error != nil && info == nil {
-//                    HUD.hide(animated: true)
-//
-//                    if ArrLive.count < 1{
-//                    self.showAlert(message: "No Content To show")
-//                    }
-//                } else{
-//                    HUD.hide(animated: true)
-//
-//                    self.showAlert(message: "Server Error")
-//                }
-//                HUD.hide(animated: true)
-                
                 
                 if error == nil && info != nil  {
                     if info!.isEmpty {
@@ -116,9 +94,8 @@ class LiveVC : UIViewController {
                         }
                         //  LiveTV.isHidden = false
                         HUD.hide(animated: true)
-                        self.refreshControl.endRefreshing()
+//                        self.refreshControl.endRefreshing()
                     }
-                    LiveTV.reloadData()
 
                 } else if error == nil && info == nil {
                     HUD.flash(.label(message), delay: 2.0)
@@ -127,8 +104,10 @@ class LiveVC : UIViewController {
                     self.showAlert(message: "Server Error")
                     HUD.hide(animated: true)
                 }
+                LiveTV.reloadData()
+
             }
-            
+
         } else {
             showAlert(message: "No Internet Connection")
         }
@@ -292,12 +271,14 @@ extension LiveVC : UITableViewDataSource , UITableViewDelegate , LiveActionDeleg
         return ArrLive.count
     }
     
-    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        if indexPath.row == ArrLive.count - 1{
-            pagenum += 1
-            GetLive(Type: "live", Refresh: "reload")
-        }
-    }
+    //MARK: Pagination
+    
+//    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+//        if indexPath.row == ArrLive.count - 1{
+//            pagenum += 1
+//            GetLive(Type: "live", Refresh: "reload")
+//        }
+//    }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "LiveTVCell") as! LiveTVCell
@@ -325,6 +306,9 @@ extension LiveVC : UITableViewDataSource , UITableViewDelegate , LiveActionDeleg
         let vidurl       =  URL( string: ArrLive[indexPath.row].Title)
         cell.VideoViewOut.loadVideoURL(vidurl!)
      
+        if indexPath.row == ArrLive.count-1{
+            refreshControl.endRefreshing()
+        }
         return cell
         
     }
