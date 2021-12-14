@@ -8,7 +8,7 @@
 
 import UIKit
 import Alamofire
-import PKHUD
+
 class EnterPhoneVC: UIViewController {
     
     @IBOutlet weak var LPhoneNumber: UILabel!  // EnterMobileNumber
@@ -25,10 +25,9 @@ class EnterPhoneVC: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         TFPhoneNumber.becomeFirstResponder()
-        
-        
-        // Do any additional setup after loading the view.
+                
     }
     @IBAction func BtnConfirm(_ sender: Any) {
         
@@ -53,7 +52,6 @@ class EnterPhoneVC: UIViewController {
     }
     @IBAction func BtnBack(_ sender: Any) {
 //        Helper.GoToAnyScreen(storyboard: "Main", identifier: "ClientSignUPVC")
-
         self.navigationController?.popViewController(animated: true)
     }
     

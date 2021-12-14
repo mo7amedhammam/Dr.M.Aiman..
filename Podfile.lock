@@ -385,7 +385,6 @@ PODS:
     - nanopb/encode (= 2.30908.0)
   - nanopb/decode (2.30908.0)
   - nanopb/encode (2.30908.0)
-  - PKHUD (5.3.0)
   - Player (0.14.0)
   - PromisesObjC (1.2.12)
   - ReadMoreTextView (3.0.1)
@@ -418,7 +417,6 @@ DEPENDENCIES:
   - MBCircularProgressBar
   - MOLH
   - Mux-Stats-AVPlayer (~> 1.3.0)
-  - PKHUD
   - Player
   - ReadMoreTextView
   - RNCryptor (~> 5.0)
@@ -462,7 +460,6 @@ SPEC REPOS:
     - Mux-Stats-AVPlayer
     - Mux-Stats-Core
     - nanopb
-    - PKHUD
     - Player
     - PromisesObjC
     - ReadMoreTextView
@@ -508,7 +505,6 @@ SPEC CHECKSUMS:
   Mux-Stats-AVPlayer: f6366e5e2862b0fbabfd8bb812470caf7f02847f
   Mux-Stats-Core: 16b58f39b40a5277ab0742f2efaf544cee98792d
   nanopb: a0ba3315591a9ae0a16a309ee504766e90db0c96
-  PKHUD: 98f3e4bc904b9c916f1c5bb6d765365b5357291b
   Player: 37e0acc16ea1495fc241df88fe9f089367513331
   PromisesObjC: 3113f7f76903778cf4a0586bd1ab89329a0b7b97
   ReadMoreTextView: 19147adf93abce6d7271e14031a00303fe28720d
@@ -519,6 +515,6 @@ SPEC CHECKSUMS:
   SwiftyJSON: 2f33a42c6fbc52764d96f13368585094bfd8aa5e
   YouTubePlayer: 2b5f2830d8f9b2cde942083211291e382c9e6bd5
 
-PODFILE CHECKSUM: d382941da83f4ddc868505d90a58105d06fde96f
+PODFILE CHECKSUM: 8b0bfb2192ddeb022cb1851435d055e0a784ed6a
 
 COCOAPODS: 1.10.1

@@ -33,7 +33,6 @@ target 'Dr.M.Aiman' do
     pod 'KeychainSwift'
     pod 'YouTubePlayer'
     
-    pod 'PKHUD'
     pod 'ImageViewer.swift'
     pod 'JBTabBarAnimation'
     

@@ -6,7 +6,6 @@
 //
 
 import UIKit
-import PKHUD
 import ImageViewer_swift
 
 class EditProfileVC: UIViewController {
@@ -31,10 +30,18 @@ class EditProfileVC: UIViewController {
     
     var tag : Int!
     
+    var indicator:ProgressIndicator?
     @IBOutlet weak var ViewSuper: UIView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
+  
+        // indicator hud ----------------//
+        indicator = ProgressIndicator(inview:self.view,loadingViewColor: UIColor.lightGray, indicatorColor: #colorLiteral(red: 0.07058823529, green: 0.3568627451, blue: 0.6352941176, alpha: 1) , msg:  SalmanLocalize.textLocalize(key: "LPleaseWait") )
+        indicator?.center = self.view.center
+        self.view.addSubview(indicator!)
+        //  end indicator hud ----------------//
+        
         
 //        Helper.addBlurEffect(targetView: popupbackview , targetstyle: .prominent, secondvc: popupfrontview)
         // Do any additional setup after loading the view.
@@ -46,8 +53,8 @@ class EditProfileVC: UIViewController {
         LAname.text       = Helper.getFirstName()
         TFemail.text      = Helper.getEmail()
         TFphone.text      = Helper.getPhoneNumber()
-        Helper.SetImage(EndPoint: Helper.getImage(), image: profileImage, name: "person.fill", status: 1)
-        Helper.SetImage(EndPoint: Helper.getCover(), image: coverImage, name: "person.fill", status: 1)
+        Helper.SetImage(EndPoint: Helper.getImage(), image: profileImage, name: "person.fill", status: 0)
+        Helper.SetImage(EndPoint: Helper.getCover(), image: coverImage, name: "person.fill", status: 0)
         profileImage.setupImageViewer()
         coverImage.setupImageViewer()
     }
@@ -136,23 +143,24 @@ class EditProfileVC: UIViewController {
     func UpdateProfile (Email : String , PhoneNumber : String , FirstName : String ){
         
         if Reachable.isConnectedToNetwork() {
-            HUD.show(.progress)
+            self.indicator?.start()
             API.EditProfile(Email: Email, PhoneNumber: PhoneNumber, FirstName: FirstName) { [self] (error : Error?, status : Int?, message : String?) in
                 if status == 0 && error == nil {
                     getdata()
-                    HUD.hide()
+                    self.indicator?.stop()
                     ViewSuper.isHidden = true
                     self.hidePopUp(pop: popupViewOut)
                 } else if status == -1 && error == nil {
-                    HUD.hide()
-                    HUD.flash(.label(message!))
+                    self.indicator?.stop()
+                    self.AlertShowMessage(controller: self, text: message!, status: 1)
+                    
                 } else {
-                    HUD.hide()
-                    HUD.flash(.label("Server Error"))
+                    self.indicator?.stop()
+                    self.AlertServerError(controller: self)
                 }
             }
         } else {
-            HUD.flash(.label("No Internet Connection"))
+            self.AlertInternet(controller: self)
         }
     }
 
@@ -172,7 +180,7 @@ class EditProfileVC: UIViewController {
         case 1:
             // email
             if Helper.isValidEmail(emailStr: popUpTextFeild.text!) == false {
-                HUD.flash(.label("Please Enter Valid Email"))
+                self.showAlert(message: "Please Enter Valid Email")
             } else {
                 UpdateProfile(Email: value, PhoneNumber: Helper.getPhoneNumber(), FirstName: Helper.getFirstName())
             }
@@ -209,28 +217,30 @@ class EditProfileVC: UIViewController {
         }
         
         if Reachable.isConnectedToNetwork(){
-            HUD.show(.labeledProgress(title: "Updating Image", subtitle: nil))
+            self.indicator?.start()
             API.uploadUserImageMultipart(image: image) { (error : Error?, status : Int?, message : String? ,imageEndPoint : String?) in
                 if error == nil && status == 0 {
                     if status != 0 {
-                        HUD.hide(animated: true, completion: nil)
-                        HUD.flash(.label("Not updated"), delay: 2.0)
+                        self.indicator?.stop()
+                        self.showAlert(message: "Not updated")
                     }else{
                         print("\(URLs.ImageBaseURL+imageEndPoint!)")
                         
                         self.saveNewImage(type: type, image: "\(imageEndPoint!)")
-                        HUD.hide()
+                        self.indicator?.stop()
+                        
                     }
                 } else  if  error == nil && status == -1 {
-                    HUD.hide(animated: true, completion: nil)
-                    HUD.flash(.label(message), delay: 2.0)
+                    self.indicator?.stop()
+                    self.AlertShowMessage(controller: self, text: message!, status: 1)
+                    
                 }else {
-                    HUD.hide(animated: true, completion: nil)
-                    HUD.flash(.label("Server Error"), delay: 2.0)
+                    self.indicator?.stop()
+                    self.AlertServerError(controller: self)
                 }
             }
         } else {
-            HUD.flash(.labeledError(title: "No Internet Connection", subtitle: "") , delay: 2.0)
+            self.AlertInternet(controller: self)
         }
     }
     
@@ -241,24 +251,24 @@ class EditProfileVC: UIViewController {
             API.updateImage(type: type, Image: image) { (error : Error?, status : Int, message : String?) in
                 if error == nil && status == 0 {
                     if status != 0 {
-                        HUD.hide(animated: true, completion: nil)
-                        HUD.flash(.label("Not updated"), delay: 2.0)
+                        self.indicator?.stop()
+                        self.showAlert(message: "Not updated")
                     }else{
-                        print("new saved image :;;;;;  \(image)")
-                        HUD.flash(.label("image updated"), delay: 2.0)
+                        self.showAlert(message: "Image Updated")
+                        self.indicator?.stop()
                         
-                        HUD.hide()
                     }
                 } else  if  error == nil && status == -1 {
-                    HUD.hide(animated: true, completion: nil)
-                    HUD.flash(.label(message), delay: 2.0)
-                }else {
-                    HUD.hide(animated: true, completion: nil)
-                    HUD.flash(.label("Server Error"), delay: 2.0)
+                    self.indicator?.stop()
+                    self.AlertShowMessage(controller: self, text: message!, status: 1)
+                    
+                } else {
+                    self.indicator?.stop()
+                    self.AlertServerError(controller: self)
                 }
             }
         }else{
-            HUD.flash(.labeledError(title: "no internet connection", subtitle: nil))
+            self.AlertInternet(controller: self)
         }
     }
     

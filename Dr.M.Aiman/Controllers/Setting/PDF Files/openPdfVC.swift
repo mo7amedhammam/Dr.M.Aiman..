@@ -5,7 +5,6 @@
 //  Created by mac on 04/07/2021.
 //
 import UIKit
-import PKHUD
 import PDFKit
 
 class openPdfVC: UIViewController, UIDocumentInteractionControllerDelegate {
@@ -33,18 +32,13 @@ class openPdfVC: UIViewController, UIDocumentInteractionControllerDelegate {
                     pdfview.autoScales = true
                     pdfview.displayDirection = .vertical
                     pdfview.document = pdf
-                    HUD.hide()
                 }
         self.ViewPdfOpen.addSubview(pdfview)
     }
-    
-    
-    
+        
     @IBAction func DismissBtn(_ sender: Any) {
         self.dismiss(animated: true, completion: nil)
 //        self.navigationController?.popViewController(animated: true)
     }
-    
-
-    
+        
 }

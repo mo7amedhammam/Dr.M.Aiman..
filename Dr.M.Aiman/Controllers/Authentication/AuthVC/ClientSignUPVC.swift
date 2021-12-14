@@ -7,7 +7,6 @@
 
 
 import UIKit
-import PKHUD
 import Alamofire
 
 class ClientSignUPVC: UIViewController {
@@ -32,10 +31,19 @@ class ClientSignUPVC: UIViewController {
     
     var genderArr = ["Male","Female"]
     var currentDeviceMacAddress : String!
+    var indicator:ProgressIndicator?
     
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        // indicator hud ----------------//
+        indicator = ProgressIndicator(inview:self.view,loadingViewColor: UIColor.lightGray, indicatorColor: #colorLiteral(red: 0.07058823529, green: 0.3568627451, blue: 0.6352941176, alpha: 1) , msg:  SalmanLocalize.textLocalize(key: "LPleaseWait") )
+        indicator?.center = self.view.center
+        self.view.addSubview(indicator!)
+        //  end indicator hud ----------------//
+        
+        
         self.imagePicker.delegate  = self
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(PickImage))
         IVAddUser.isUserInteractionEnabled = true
@@ -47,7 +55,6 @@ class ClientSignUPVC: UIViewController {
         
         //        setDatePicker()
         print(currentDeviceMacAddress!)
-        // Do any additional setup after loading the view.
     }
     
     @objc func PickImage (){
@@ -68,7 +75,6 @@ class ClientSignUPVC: UIViewController {
         
     }
     @IBAction func BuShowandHidePassword(_ sender: UIButton) {
-        
         switch sender.tag {
         case 0:
             BuPasswordEye.isSelected = !BuPasswordEye.isSelected
@@ -167,67 +173,55 @@ class ClientSignUPVC: UIViewController {
     
     //MARK: -------  upload User Image  -------
     func addUserImageThenREgister() {
+        self.indicator?.start()
         
         if Reachable.isConnectedToNetwork(){
-            HUD.show(.labeledProgress(title: "Creating Profile", subtitle: ""))
             API.uploadUserImageMultipart(image: IVUser.image!) { (error : Error?, status : Int?, message : String? ,imageEndPoint : String?) in
                 if error == nil && status == 0 {
                     if status != 0 {
-                        HUD.hide(animated: true, completion: nil)
-                        HUD.flash(.label("Not Created"), delay: 2.0)
-                    }else{
+                        self.indicator?.stop()
+                        self.showAlert(message: "Not Created")
+                    } else {
                         print("\(URLs.ImageBaseURL+imageEndPoint!)")
-
                         if self.IVUser.image != nil {
-                            
-                        self.registerUser(imageurlString : "\(imageEndPoint!)")
-                        } else{
+                            self.registerUser(imageurlString : "\(imageEndPoint!)")
+                        } else {
                             print("******  nil image *****")
-                            
                             self.registerUser(imageurlString : "")
                         }
                     }
                 } else  if  error == nil && status == -1 {
-                    HUD.hide(animated: true, completion: nil)
-                    HUD.flash(.label(message), delay: 2.0)
+                    self.indicator?.stop()
+                    self.AlertShowMessage(controller: self, text: message!, status: 1)
                 }else {
-                    HUD.hide(animated: true, completion: nil)
-                    HUD.flash(.label("Server Error"), delay: 2.0)
+                    self.indicator?.stop()
+                    self.AlertServerError(controller: self)
                 }
             }
         } else {
-            HUD.flash(.labeledError(title: "No Internet Connection", subtitle: "") , delay: 2.0)
+            self.indicator?.stop()
+            self.AlertInternet(controller: self)
         }
     }
     
-    
-    
-    
-    
     //MARK: register new user
     func registerUser( imageurlString : String)  {
-        
         API.userRegisteration(Email: TFEmail.text!, MacAdress: "\(currentDeviceMacAddress!)", FirstName: TFName.text!, Gender: userGender, PhoneNumber: TFPhoneNumber.text!, Image: imageurlString, Password: TFPassword.text!) { (error : Error?, status : Int, message : String?) in
             if error == nil && status == 0 {
-                HUD.hide(animated: true)
-                HUD.flash(.label(message!) , delay: 2)
-                print("---------- user created ---------")
-                print("---------- with image --------- \(imageurlString)")
-
-                
-//                Helper.setUserImage(user_imagee: imageurlString)
-                
+                self.indicator?.stop()
+                //                Helper.setUserImage(user_imagee: imageurlString)
                 self.dismiss(animated: true, completion: nil)
             } else  if  error == nil && status == -1 {
-                HUD.flash(.label(message), delay: 2.0)
+                self.AlertShowMessage(controller: self, text: message!, status: 1)
+                self.indicator?.stop()
+                
             }else {
-                HUD.flash(.label("Server Error"), delay: 2.0)
+                self.AlertServerError(controller: self)
+                self.indicator?.stop()
+                
             }
         }
         
     }
-    
-    
-    
     
 }

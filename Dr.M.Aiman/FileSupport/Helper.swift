@@ -305,6 +305,66 @@ class Helper: NSObject  {
         }
     }
     
+    class func openWhatsapp(WhatsappNumber : String ){
+        let urlWhats = "https://api.whatsapp.com/send?phone=\(WhatsappNumber)"
+
+        if let urlString = urlWhats.addingPercentEncoding(withAllowedCharacters: CharacterSet.urlQueryAllowed){
+            if let whatsappURL = URL(string: urlString) {
+                if UIApplication.shared.canOpenURL(whatsappURL){
+                    if #available(iOS 10.0, *) {
+                        UIApplication.shared.open(whatsappURL, options: [:], completionHandler: nil)
+                    } else {
+                        UIApplication.shared.openURL(whatsappURL)
+                    }
+                }
+                else {
+                    print("Install Whatsapp")
+                }
+            }
+        }
+    }
+    
+   class func OpenYoutube(youtubeID: String) {
+
+       let appURL = NSURL(string: "youtube://www.youtube.com/channel/\(youtubeID)")!
+       let webURL = NSURL(string: "https://www.youtube.com/channel/\(youtubeID)")!
+       let application = UIApplication.shared
+
+       if application.canOpenURL(appURL as URL) {
+           application.open(appURL as URL)
+       } else {
+           // if Youtube app is not installed, open URL inside Safari
+           application.open(webURL as URL)
+       }
+    }
+
+    class func openTelegram(telegramID : String){
+//        let appURL = NSURL(string: "tg://resolve?domain=NujqkN0suwE1MzU0")!
+        let appURL = NSURL(string: "https://t.me/joinchat/\(telegramID)")!
+        let webURL = NSURL(string: "https://t.me/joinchat/\(telegramID)")!
+        let application = UIApplication.shared
+
+        if application.canOpenURL(appURL as URL) {
+            application.open(appURL as URL)
+        } else {
+            // if Youtube app is not installed, open URL inside Safari
+            application.open(webURL as URL)
+        }
+    }
+    
+    class func openFaceBook(pageId: String, pageName: String) {
+        let appURL = NSURL(string: "fb://page/?id=\(pageId)")!
+        let webURL = NSURL(string: "http://facebook.com/\(pageName)/")!
+        let application = UIApplication.shared
+        
+        if application.canOpenURL(appURL as URL) {
+            application.open(appURL as URL)
+        } else {
+            // if Youtube app is not installed, open URL inside Safari
+            application.open(webURL as URL)
+        }
+       }
+    
     
    //MARK: BlurEffect
     class func addBlurEffect( targetView: UIView, targetstyle : UIBlurEffect.Style ){

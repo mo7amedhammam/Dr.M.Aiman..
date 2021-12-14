@@ -6,47 +6,47 @@
 //
 
 import UIKit
-import PKHUD
 
 class UniversitiesVC: UIViewController {
     
     @IBOutlet weak var TvUniversities: UITableView!
     
-    
-//    var universities = ["Menofia University", "Banha University" , "Cairo Uinversity","Menofia University", "Banha University" , "Cairo Uinversity"]
-//    var courses = ["Data structure", "Algorithms" , "File" , "MultiMedia","Data structure", "Algorithms" , "File" , "MultiMedia"]
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        self.TvUniversities.dataSource = self
-        self.TvUniversities.delegate = self
-        
-//        print(accessToken)
-        GetUniversities()
-        
-        
-    }
-    
-    
+    var indicator:ProgressIndicator?
     
     
     //MARK:---------- GET ALL UNIVERSITIES
     var ArrUniversities = [UniversitiesModel]()
     var ArrCourses = [coursesModel]()
     
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        
+        self.TvUniversities.dataSource = self
+        self.TvUniversities.delegate = self
+        
+        // indicator hud ----------------//
+        indicator = ProgressIndicator(inview:self.view,loadingViewColor: UIColor.lightGray, indicatorColor: #colorLiteral(red: 0.07058823529, green: 0.3568627451, blue: 0.6352941176, alpha: 1) , msg:  SalmanLocalize.textLocalize(key: "LPleaseWait") )
+        indicator?.center = self.view.center
+        self.view.addSubview(indicator!)
+        //  end indicator hud ----------------//
+        
+        GetUniversities()
+    }
+    
     func GetUniversities()  {
-//        API.GetUniversitiesAndCourses { (error : Error?, universities : [UniversitiesModel]?, message : String?) in
-//
-//        }
+        self.indicator?.start()
         if Reachable.isConnectedToNetwork(){
             API.GetUniversitiesAndCourses { (error : Error?, universities : [UniversitiesModel]?, message : String?) in
                 if error == nil && universities != nil {
                     if universities!.isEmpty {
-                        HUD.flash(.label("No Content To Show"), delay: 2.0)
+                        self.AlertShowMessage(controller: self, text: "No Content To Show", status: 1)
                         self.TvUniversities.isHidden = true
+                        self.indicator?.stop()
                     }else{
                         for data in universities!  {
-                            if self.TvUniversities.isHidden == true{
+                            if self.TvUniversities.isHidden == true {
                                 self.TvUniversities.isHidden = false
                             }
                             
@@ -56,28 +56,29 @@ class UniversitiesVC: UIViewController {
                             print("Arr course count :\(self.ArrCourses.count)")
                             
                             self.TvUniversities.reloadData()
-                            HUD.hide(animated: true, completion: nil)
+                            self.indicator?.stop()
+                            
                         }
                         
                     }
                 } else  if  error == nil && universities == nil {
-                    HUD.flash(.label(message), delay: 2.0)
+                    self.AlertShowMessage(controller: self, text: message!, status: 1)
+                    self.indicator?.stop()
                 }else {
-                    HUD.flash(.label("Server Error"), delay: 2.0)
+                    self.AlertServerError(controller: self)
+                    self.indicator?.stop()
                 }
             }
         } else {
-            HUD.flash(.labeledError(title: "No Internet Connection", subtitle: "") , delay: 2.0)
+            self.AlertInternet(controller: self)
+            self.indicator?.stop()
         }
     }
     
     var tappedindex : Int! = 0
 }
 
-extension UniversitiesVC : UITableViewDataSource, UITableViewDelegate,
-                           UICollectionViewDataSource,
-                           UICollectionViewDelegate
-{
+extension UniversitiesVC : UITableViewDataSource, UITableViewDelegate , UICollectionViewDataSource , UICollectionViewDelegate {
     //MARK: TableView
     
     func numberOfSections(in tableView: UITableView) -> Int {
@@ -99,6 +100,8 @@ extension UniversitiesVC : UITableViewDataSource, UITableViewDelegate,
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         TvUniversities.register(UINib(nibName: "UniversityCell", bundle: nil), forCellReuseIdentifier: "UniversityCell")
         let cell = tableView.dequeueReusableCell(withIdentifier: "UniversityCell", for: indexPath) as! UniversityCell
+        cell.coursecCollection.dataSource = self
+        cell.coursecCollection.delegate   = self
         return cell
     }
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -115,6 +118,8 @@ extension UniversitiesVC : UITableViewDataSource, UITableViewDelegate,
     
     //MARK: collection view
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        print("count : \(ArrUniversities[section].Courses.count)")
+
         return ArrUniversities[section].Courses.count
     }
     
@@ -124,19 +129,22 @@ extension UniversitiesVC : UITableViewDataSource, UITableViewDelegate,
         
         cell.LAcourseNameOut.text! = ArrUniversities[indexPath.section].Courses[indexPath.row].Title
         cell.LaPlaylistCount.text! = "( \(ArrUniversities[indexPath.section].Courses[indexPath.row].TotalPlayLists) Playlist )"
+        
+        print("title : \(ArrUniversities[indexPath.section].Courses[indexPath.row].Title)")
+        
         return cell
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-//        tappedindex = indexPath.item
-//        collectionView.reloadData()
+        //        tappedindex = indexPath.item
+        //        collectionView.reloadData()
         print("\(ArrUniversities[indexPath.section].Courses[indexPath.row].Id)")
-
+        
         let vc = storyboard?.instantiateViewController(identifier: "PlaylistVC") as! PlaylistVC
         vc.selectedCourseID = "\(ArrUniversities[indexPath.section].Courses[indexPath.row].Id)"
         vc.selectedCourseTitle = "\(ArrUniversities[indexPath.section].Courses[indexPath.row].Title)"
-//        vc.selectedCourseImage = "\(ArrUniversities[indexPath.section].Courses[indexPath.row].Image)"
-
+        //        vc.selectedCourseImage = "\(ArrUniversities[indexPath.section].Courses[indexPath.row].Image)"
+        
         self.navigationController?.pushViewController(vc, animated: true)
     }
     

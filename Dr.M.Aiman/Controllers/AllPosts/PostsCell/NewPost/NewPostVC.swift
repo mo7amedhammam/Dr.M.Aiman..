@@ -7,7 +7,6 @@
 
 import UIKit
 import Alamofire
-import PKHUD
 
 class NewPostVC: UIViewController {
     
@@ -26,10 +25,22 @@ class NewPostVC: UIViewController {
     @IBOutlet weak var BtnClose: UIButton!
     @IBOutlet weak var BtnPhoto: UIButton!
     
+    var indicator:ProgressIndicator?
+
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         // Do any additional setup after loading the view.
+        
+        // indicator hud ----------------//
+        indicator = ProgressIndicator(inview:self.view,loadingViewColor: UIColor.lightGray, indicatorColor: #colorLiteral(red: 0.07058823529, green: 0.3568627451, blue: 0.6352941176, alpha: 1) , msg:  SalmanLocalize.textLocalize(key: "LPleaseWait") )
+        indicator?.center = self.view.center
+        self.view.addSubview(indicator!)
+        //  end indicator hud ----------------//
+        
+        
+        
         NewPostImage.isHidden = true
         BtnClose.isHidden     = true
         HView.constant = 40
@@ -42,7 +53,6 @@ class NewPostVC: UIViewController {
         LaTypePerson.text = Helper.getRoleName()
         
     }
-    
     
     @IBAction func BUPickImage(_ sender: Any) {
         showPhotoMenu()
@@ -68,59 +78,66 @@ class NewPostVC: UIViewController {
     
     @IBAction func PostBtnPressed(_ sender: Any) {
         if NewPostImage.image == nil && (NewPostText.text == "" || NewPostText.text.isEmpty){
-            HUD.flash(.label("Empty Post Not Allowed"), delay: 2.0)
-        }else{
+            self.showAlert(message: "Empty Post Not Allowed")
+        } else {
         addPostWithImage()
     }
     }
     
     func addPostWithImage() {
+        self.indicator?.start()
+
         if Reachable.isConnectedToNetwork() {
-            HUD.show(.progress)
+            
             if NewPostImage.image == nil {
                 self.uploadPost(text: self.NewPostText.text!, imageurlString: "")
             } else {
-//                HUD.show(.labeledProgress(title: "Uploading", subtitle: ""))
                 API.uploadImage(image: NewPostImage.image!) { (error : Error?, status : Int?, message : String? ,imageEndPoint : String?) in
                     if error == nil && status == 0{
                         if status != 0 {
-                            HUD.flash(.label("not uploaded"), delay: 2.0)
+                            self.showAlert(message: "Not Uploaded")
+                            self.indicator?.stop()
                         }else{
                             self.uploadPost(text: self.NewPostText.text!, imageurlString: "\(imageEndPoint!)")
                             print("\(URLs.ImageBaseURL+imageEndPoint!)")
                         }
                         
                     } else  if  error == nil && status != 0 {
-                        HUD.flash(.label(message), delay: 2.0)
-                    }else {
-                        HUD.flash(.label("Server Error"), delay: 2.0)
+                        self.AlertShowMessage(controller: self, text: message!, status: 1)
+                        self.indicator?.stop()
+                        
+                    } else {
+                        self.AlertServerError(controller: self)
+                        self.indicator?.stop()
                     }
                 }
                 
             }
      
         } else {
-            HUD.flash(.labeledError(title: "No Internet Connection", subtitle: "") , delay: 2.0)
+            self.AlertInternet(controller: self)
+            self.indicator?.stop()
+            
         }
-        
-        
-        
+                
     }
     
     func uploadPost(text : String , imageurlString : String)  {
         API.addPost(text: text , Image: imageurlString ) { (error : Error?, status : Int, message : String?) in
             if error == nil && status == 0{
                 if status != 0 {
-                    HUD.flash(.label("not uploaded"), delay: 2.0)
-                }else{
-                    HUD.hide(animated: true)
-                    HUD.flash(.labeledSuccess(title: "Uploaded", subtitle: "") , delay: 2.0)
+                    self.showAlert(message: "Not Uploaded")
+                    self.indicator?.stop()
+                } else {
+                    self.indicator?.stop()
                     self.navigationController?.popViewController(animated: true)
                 }
             } else  if  error == nil && status != 0 {
-                HUD.flash(.label(message), delay: 2.0)
-            }else {
-                HUD.flash(.label("Server Error"), delay: 2.0)
+                self.indicator?.stop()
+                self.AlertShowMessage(controller: self, text: message!, status: 1)
+            } else {
+                self.indicator?.stop()
+                self.AlertServerError(controller: self)
             }
         }
     }

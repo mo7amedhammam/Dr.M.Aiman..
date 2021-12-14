@@ -5,7 +5,6 @@
 //  Created by mac on 01/07/2021.
 //
 import UIKit
-import PKHUD
 
 class PdfCategoryVC: UIViewController {
     
@@ -21,9 +20,23 @@ class PdfCategoryVC: UIViewController {
     @IBOutlet weak var BtnAddOrUpdate: UIButton!
     var AddOrUpdate     = 0
     var idForUpdate     = 0
+    
+    
+    var indicator:ProgressIndicator?
+
   
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        
+        // indicator hud ----------------//
+        indicator = ProgressIndicator(inview:self.view,loadingViewColor: UIColor.lightGray, indicatorColor: #colorLiteral(red: 0.07058823529, green: 0.3568627451, blue: 0.6352941176, alpha: 1) , msg:  SalmanLocalize.textLocalize(key: "LPleaseWait") )
+        indicator?.center = self.view.center
+        self.view.addSubview(indicator!)
+        //  end indicator hud ----------------//
+        
+        
+        
         self.navigationController?.navigationBar.isHidden = false
         TVCategory.dataSource = self
         TVCategory.delegate = self
@@ -49,31 +62,28 @@ class PdfCategoryVC: UIViewController {
     
     
     func Upload_Pdf_with_Name ( Type : API.Category , Id : Int , Name : String){
-                
-        print("type  : \(Type)    id  : \(Id)")
+        self.indicator?.start()
         if Reachable.isConnectedToNetwork() {
-            HUD.show(.progress)
             API.PDFCategory(type : Type , Id : Id ,  Name : Name ) { [self] (error : Error?, status : Int, message : String?) in
                 if error == nil && status == 0  {
-                    HUD.hide()
+                    self.indicator?.stop()
                     ViewAddCat.isHidden = true
-                    HUD.flash(.label("Success"), delay: 2.0)
                     TFNewCat.text = ""
                     ArrPDFCAtegory.removeAll()
                     PDFCategory(pagenum: 0)
                 } else if error == nil && status == -1 {
-                    HUD.hide()
-                    HUD.flash(.label(message), delay: 2.0)
+                    self.indicator?.stop()
+                    self.AlertShowMessage(controller: self, text: message!, status: 1)
                 } else {
-                    HUD.hide()
-                    HUD.flash(.label("Server Error"), delay: 2.0)
+                    self.indicator?.stop()
+                    self.AlertServerError(controller: self)
                 }
             }
             
         } else {
-            HUD.flash(.labeledError(title: "no connection", subtitle: "please check your internet connection"), delay: 2.0)
+            self.AlertInternet(controller: self)
+            self.indicator?.stop()
         }
-        
     }
     
     
@@ -96,8 +106,6 @@ class PdfCategoryVC: UIViewController {
         ViewAddCat.isHidden = true
         TFNewCat.text = ""
     }
-    
-    
 }
 
 
@@ -139,7 +147,6 @@ extension PdfCategoryVC : UITableViewDelegate , UITableViewDataSource, moreActio
         optionMenu.addAction(cancelAction)
         
         self.present(optionMenu, animated: true, completion: nil)
-        
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -172,14 +179,15 @@ extension PdfCategoryVC : UITableViewDelegate , UITableViewDataSource, moreActio
     }
     
     func PDFCategory(pagenum: Int){
-        
+        self.indicator?.start()
+
         if Reachable.isConnectedToNetwork(){
-            HUD.show(.progress)
             API.GetAllPDfs(pagenum: pagenum, completion: {(error : Error?, pdfmodel : [CategoryModel]?, message : String?) -> Void in
                 if error == nil && message == "Success"{
                     if error != nil {
-                        HUD.flash(.label("No Content To Show"), delay: 2.0)
-                    }else{
+                        self.AlertShowMessage(controller: self, text: "No Content To Show", status: 1)
+                        self.indicator?.stop()
+                    } else {
                         for data in pdfmodel! {
                             if self.TVCategory.isHidden == true{
                                 self.TVCategory.isHidden = false
@@ -187,18 +195,24 @@ extension PdfCategoryVC : UITableViewDelegate , UITableViewDataSource, moreActio
                             self.ArrPDFCAtegory.append(data)
                         }
                         self.TVCategory.reloadData()
-                        HUD.hide(animated: true, completion: nil)
-                        
+                        self.indicator?.stop()
+
                     }
                 } else  if  error == nil && message != "Success"{
-                    HUD.flash(.label(message), delay: 2.0)
+                    self.AlertShowMessage(controller: self, text: message!, status: 1)
+                    self.indicator?.stop()
+
                 }else {
-                    HUD.flash(.label("Server Error"), delay: 2.0)
+                    self.AlertServerError(controller: self)
+                    self.indicator?.stop()
+
                 }
             }
             
             )} else {
-                showAlert(message: "No internet connection", title: "Alert")
+                self.AlertInternet(controller: self)
+                self.indicator?.stop()
+
             }
     }
     

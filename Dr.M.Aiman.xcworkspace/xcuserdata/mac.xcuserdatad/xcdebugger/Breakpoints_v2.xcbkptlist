@@ -16,8 +16,8 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "646"
             endingLineNumber = "646"
-            landmarkName = "API"
-            landmarkType = "3">
+            landmarkName = "addPost(text:Image:completion:)"
+            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -32,7 +32,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "648"
             endingLineNumber = "648"
-            landmarkName = "EditPost(Id:text:Image:completion:)"
+            landmarkName = "addPost(text:Image:completion:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -48,23 +48,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "652"
             endingLineNumber = "652"
-            landmarkName = "EditPost(Id:text:Image:completion:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "8FCC0020-8815-46CF-86A7-2AF49DD1E0BB"
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Dr.M.Aiman/Controllers/AllPosts/PostsCell/Comments /CommentsVC.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "239"
-            endingLineNumber = "239"
-            landmarkName = "DeleteComment(Type:Id:IndexPath:)"
+            landmarkName = "addPost(text:Image:completion:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -78,8 +62,8 @@
             filePath = "Dr.M.Aiman/Controllers/AllPosts/PostsCell/Comments /CommentsVC.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "395"
-            endingLineNumber = "395"
+            startingLineNumber = "485"
+            endingLineNumber = "485"
             landmarkName = "AddCommentOnly(Type:Id:text:Img:)"
             landmarkType = "9">
          </BreakpointContent>
@@ -96,23 +80,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "976"
             endingLineNumber = "976"
-            landmarkName = "GetPlaylistByCourse(id:completion:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "46285670-7D20-4C8F-B804-CB2A5D1D6D87"
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Dr.M.Aiman/Controllers/Authentication/AuthVC/StartScreenVC.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "125"
-            endingLineNumber = "125"
-            landmarkName = "goToMain()"
+            landmarkName = "GetUniversitiesAndCourses(completion:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -128,7 +96,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "1108"
             endingLineNumber = "1108"
-            landmarkName = "addOrRemovePostReact(Type:PostId:ReactTypeId:completion:)"
+            landmarkName = "S_UploadImageComment(Id:text:image:completion:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -144,7 +112,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "1111"
             endingLineNumber = "1111"
-            landmarkName = "addOrRemovePostReact(Type:PostId:ReactTypeId:completion:)"
+            landmarkName = "S_UploadImageComment(Id:text:image:completion:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -160,7 +128,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "1114"
             endingLineNumber = "1114"
-            landmarkName = "addOrRemovePostReact(Type:PostId:ReactTypeId:completion:)"
+            landmarkName = "S_UploadImageComment(Id:text:image:completion:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -176,7 +144,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "1104"
             endingLineNumber = "1104"
-            landmarkName = "addOrRemovePostReact(Type:PostId:ReactTypeId:completion:)"
+            landmarkName = "S_UploadImageComment(Id:text:image:completion:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -190,8 +158,8 @@
             filePath = "Dr.M.Aiman/Controllers/AllPosts/PostsCell/PostsVC/AllPostsVc.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "409"
-            endingLineNumber = "409"
+            startingLineNumber = "419"
+            endingLineNumber = "419"
             landmarkName = "MoreFun(index:PostLa:deleteIndex:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -206,9 +174,9 @@
             filePath = "Dr.M.Aiman/Controllers/AllPosts/PostsCell/PostsVC/AllPostsVc.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "233"
-            endingLineNumber = "233"
-            landmarkName = "BUUpdateComment(_:)"
+            startingLineNumber = "249"
+            endingLineNumber = "249"
+            landmarkName = "EditAll(Arr:HideView:TV:Type:Id:text:Image:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -222,8 +190,8 @@
             filePath = "Dr.M.Aiman/Controllers/AllPosts/PostsCell/PostsVC/AllPostsVc.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "241"
-            endingLineNumber = "241"
+            startingLineNumber = "256"
+            endingLineNumber = "256"
             landmarkName = "BUUpdateComment(_:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -238,9 +206,9 @@
             filePath = "Dr.M.Aiman/Controllers/AllPosts/PostsCell/PostsVC/AllPostsVc.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "201"
-            endingLineNumber = "201"
-            landmarkName = "EditAll(Arr:HideView:TV:Type:Id:text:Image:)"
+            startingLineNumber = "218"
+            endingLineNumber = "218"
+            landmarkName = "imagePickerController(_:didFinishPickingMediaWithInfo:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -254,25 +222,9 @@
             filePath = "Dr.M.Aiman/Controllers/AllPosts/PostsCell/PostsVC/AllPostsVc.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "245"
-            endingLineNumber = "245"
+            startingLineNumber = "259"
+            endingLineNumber = "259"
             landmarkName = "BUUpdateComment(_:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "97395134-4674-4881-B24D-B34B5E833558"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Dr.M.Aiman/Controllers/AllPosts/PostsCell/PostsVC/AllPostsVc.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "208"
-            endingLineNumber = "208"
-            landmarkName = "EditAll(Arr:HideView:TV:Type:Id:text:Image:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -286,8 +238,8 @@
             filePath = "Dr.M.Aiman/Controllers/AllPosts/PostsCell/PostsVC/AllPostsVc.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "215"
-            endingLineNumber = "215"
+            startingLineNumber = "230"
+            endingLineNumber = "230"
             landmarkName = "EditAll(Arr:HideView:TV:Type:Id:text:Image:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -304,8 +256,8 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "773"
             endingLineNumber = "773"
-            landmarkName = "EditAll(Type:Id:text:Image:completion:)"
-            landmarkType = "7">
+            landmarkName = "API"
+            landmarkType = "3">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -320,7 +272,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "777"
             endingLineNumber = "777"
-            landmarkName = "EditAll(Type:Id:text:Image:completion:)"
+            landmarkName = "deletePostComment(Type:Id:completion:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -336,7 +288,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "780"
             endingLineNumber = "780"
-            landmarkName = "EditAll(Type:Id:text:Image:completion:)"
+            landmarkName = "deletePostComment(Type:Id:completion:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -352,7 +304,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "783"
             endingLineNumber = "783"
-            landmarkName = "EditAll(Type:Id:text:Image:completion:)"
+            landmarkName = "deletePostComment(Type:Id:completion:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -366,9 +318,9 @@
             filePath = "Dr.M.Aiman/Controllers/AllPosts/PostsCell/PostsVC/FavouritePosts.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "61"
-            endingLineNumber = "61"
-            landmarkName = "GetLive(Type:Refresh:)"
+            startingLineNumber = "71"
+            endingLineNumber = "71"
+            landmarkName = "viewWillAppear(_:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -382,9 +334,9 @@
             filePath = "Dr.M.Aiman/Controllers/AllPosts/PostsCell/PostsVC/FavouritePosts.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "63"
-            endingLineNumber = "63"
-            landmarkName = "GetLive(Type:Refresh:)"
+            startingLineNumber = "73"
+            endingLineNumber = "73"
+            landmarkName = "viewWillAppear(_:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -398,8 +350,8 @@
             filePath = "Dr.M.Aiman/Controllers/AllPosts/PostsCell/PostsVC/FavouritePosts.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "75"
-            endingLineNumber = "75"
+            startingLineNumber = "86"
+            endingLineNumber = "86"
             landmarkName = "GetLive(Type:Refresh:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -414,8 +366,8 @@
             filePath = "Dr.M.Aiman/Controllers/AllPosts/PostsCell/PostsVC/FavouritePosts.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "85"
-            endingLineNumber = "85"
+            startingLineNumber = "96"
+            endingLineNumber = "96"
             landmarkName = "GetLive(Type:Refresh:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -430,8 +382,8 @@
             filePath = "Dr.M.Aiman/Controllers/AllPosts/PostsCell/PostsVC/FavouritePosts.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "89"
-            endingLineNumber = "89"
+            startingLineNumber = "100"
+            endingLineNumber = "100"
             landmarkName = "GetLive(Type:Refresh:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -446,24 +398,8 @@
             filePath = "Dr.M.Aiman/Controllers/AllPosts/PostsCell/PostsVC/FavouritePosts.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "71"
-            endingLineNumber = "71"
-            landmarkName = "GetLive(Type:Refresh:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "0CF47E06-0380-48BF-8AD3-811C2A1D57C7"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Dr.M.Aiman/Controllers/AllPosts/PostsCell/PostsVC/FavouritePosts.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "69"
-            endingLineNumber = "69"
+            startingLineNumber = "81"
+            endingLineNumber = "81"
             landmarkName = "GetLive(Type:Refresh:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -478,8 +414,8 @@
             filePath = "Dr.M.Aiman/Controllers/AllPosts/PostsCell/PostsVC/FavouritePosts.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "80"
-            endingLineNumber = "80"
+            startingLineNumber = "91"
+            endingLineNumber = "91"
             landmarkName = "GetLive(Type:Refresh:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -494,8 +430,8 @@
             filePath = "Dr.M.Aiman/Controllers/AllPosts/PostsCell/PostsVC/AllPostsVc.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "513"
-            endingLineNumber = "513"
+            startingLineNumber = "521"
+            endingLineNumber = "521"
             landmarkName = "tableView(_:cellForRowAt:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -510,8 +446,8 @@
             filePath = "Dr.M.Aiman/Controllers/AllPosts/PostsCell/PostsVC/AllPostsVc.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "517"
-            endingLineNumber = "517"
+            startingLineNumber = "525"
+            endingLineNumber = "525"
             landmarkName = "tableView(_:cellForRowAt:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -526,8 +462,8 @@
             filePath = "Dr.M.Aiman/Controllers/AllPosts/PostsCell/PostsVC/AllPostsVc.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "523"
-            endingLineNumber = "523"
+            startingLineNumber = "531"
+            endingLineNumber = "531"
             landmarkName = "tableView(_:cellForRowAt:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -536,6 +472,22 @@
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
             uuid = "A4CF90EC-0D89-4AF3-B204-C711E513A779"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Dr.M.Aiman/Controllers/Setting/PDF Files/SubCategoryPdfVC.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "110"
+            endingLineNumber = "110"
+            landmarkName = "Upload_Pdf_with_Name(Type:PDFCategoryId:Title:Url:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "B3843B93-6E64-4799-AA01-F53B84270383"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
@@ -551,22 +503,6 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "B3843B93-6E64-4799-AA01-F53B84270383"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Dr.M.Aiman/Controllers/Setting/PDF Files/SubCategoryPdfVC.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "116"
-            endingLineNumber = "116"
-            landmarkName = "Upload_Pdf_with_Name(Type:PDFCategoryId:Title:Url:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
             uuid = "A7FE396B-4661-4063-AE0A-2BD30348EF0D"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
@@ -574,24 +510,8 @@
             filePath = "Dr.M.Aiman/Controllers/Setting/PDF Files/SubCategoryPdfVC.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "119"
-            endingLineNumber = "119"
-            landmarkName = "Upload_Pdf_with_Name(Type:PDFCategoryId:Title:Url:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "787CE8C2-2C44-497C-95C9-912C965521AC"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Dr.M.Aiman/Controllers/Setting/PDF Files/SubCategoryPdfVC.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "104"
-            endingLineNumber = "104"
+            startingLineNumber = "115"
+            endingLineNumber = "115"
             landmarkName = "Upload_Pdf_with_Name(Type:PDFCategoryId:Title:Url:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -606,8 +526,8 @@
             filePath = "Dr.M.Aiman/Controllers/Setting/PDF Files/PdfCategoryVC.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "90"
-            endingLineNumber = "90"
+            startingLineNumber = "100"
+            endingLineNumber = "100"
             landmarkName = "BUAddNewCat(_:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -616,22 +536,6 @@
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
             uuid = "45DE65E0-C505-41E6-A7E3-30B20B8265A2"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Dr.M.Aiman/Controllers/Authentication/AuthVC/ClientSignUPVC.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "179"
-            endingLineNumber = "179"
-            landmarkName = "addUserImageThenREgister()"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "F39E2A22-D8CC-476A-8486-6D6B4D5F3D0F"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
@@ -647,7 +551,7 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "FBA5844A-F134-41A2-A7E3-21B78A51F9AA"
+            uuid = "F39E2A22-D8CC-476A-8486-6D6B4D5F3D0F"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
@@ -663,6 +567,22 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
+            uuid = "FBA5844A-F134-41A2-A7E3-21B78A51F9AA"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Dr.M.Aiman/Controllers/Authentication/AuthVC/ClientSignUPVC.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "192"
+            endingLineNumber = "192"
+            landmarkName = "addUserImageThenREgister()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
             uuid = "D050ADCD-F772-43A2-B215-3DA4226F705F"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
@@ -670,8 +590,8 @@
             filePath = "Dr.M.Aiman/Controllers/Authentication/AuthVC/ClientSignUPVC.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "182"
-            endingLineNumber = "182"
+            startingLineNumber = "187"
+            endingLineNumber = "187"
             landmarkName = "addUserImageThenREgister()"
             landmarkType = "7">
          </BreakpointContent>
@@ -688,7 +608,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "221"
             endingLineNumber = "221"
-            landmarkName = "EditProfile(Email:PhoneNumber:FirstName:completion:)"
+            landmarkName = "GetUserInfo(completion:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -704,7 +624,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "223"
             endingLineNumber = "223"
-            landmarkName = "EditProfile(Email:PhoneNumber:FirstName:completion:)"
+            landmarkName = "GetUserInfo(completion:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -720,7 +640,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "234"
             endingLineNumber = "234"
-            landmarkName = "EditProfile(Email:PhoneNumber:FirstName:completion:)"
+            landmarkName = "GetUserInfo(completion:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -734,40 +654,8 @@
             filePath = "Dr.M.Aiman/Controllers/Setting/Edit Profile/EditProfileVC.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "142"
-            endingLineNumber = "142"
-            landmarkName = "UpdateProfile(Email:PhoneNumber:FirstName:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "CAD581FF-B04F-4CAB-AD29-0906D69D3557"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Dr.M.Aiman/Controllers/Setting/Edit Profile/EditProfileVC.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "148"
-            endingLineNumber = "148"
-            landmarkName = "UpdateProfile(Email:PhoneNumber:FirstName:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "51D40DF3-A05E-4F34-8391-3ACB7137A7EF"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Dr.M.Aiman/Controllers/Setting/Edit Profile/EditProfileVC.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "151"
-            endingLineNumber = "151"
+            startingLineNumber = "149"
+            endingLineNumber = "149"
             landmarkName = "UpdateProfile(Email:PhoneNumber:FirstName:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -782,8 +670,8 @@
             filePath = "Dr.M.Aiman/Controllers/Setting/Edit Profile/EditProfileVC.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "94"
-            endingLineNumber = "94"
+            startingLineNumber = "101"
+            endingLineNumber = "101"
             landmarkName = "editBtnPressed(_:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -798,8 +686,8 @@
             filePath = "Dr.M.Aiman/Controllers/Setting/Edit Profile/EditProfileVC.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "100"
-            endingLineNumber = "100"
+            startingLineNumber = "107"
+            endingLineNumber = "107"
             landmarkName = "editBtnPressed(_:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -814,8 +702,8 @@
             filePath = "Dr.M.Aiman/Controllers/Setting/Edit Profile/EditProfileVC.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "106"
-            endingLineNumber = "106"
+            startingLineNumber = "113"
+            endingLineNumber = "113"
             landmarkName = "editBtnPressed(_:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -830,9 +718,9 @@
             filePath = "Dr.M.Aiman/Controllers/Setting/Edit Profile/EditProfileVC.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "57"
-            endingLineNumber = "57"
-            landmarkName = "getdata()"
+            startingLineNumber = "64"
+            endingLineNumber = "64"
+            landmarkName = "coveImageBtnPressed(_:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -846,8 +734,8 @@
             filePath = "Dr.M.Aiman/Controllers/Authentication/AuthVC/StartScreenVC.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "82"
-            endingLineNumber = "82"
+            startingLineNumber = "81"
+            endingLineNumber = "81"
             landmarkName = "UserLogin(Email:MacAdress:Password:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -862,8 +750,8 @@
             filePath = "Dr.M.Aiman/Controllers/Authentication/AuthVC/StartScreenVC.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "87"
-            endingLineNumber = "87"
+            startingLineNumber = "84"
+            endingLineNumber = "84"
             landmarkName = "UserLogin(Email:MacAdress:Password:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -878,8 +766,8 @@
             filePath = "Dr.M.Aiman/Controllers/AllPosts/PostsCell/Comments /CommentsVC.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "105"
-            endingLineNumber = "105"
+            startingLineNumber = "154"
+            endingLineNumber = "154"
             landmarkName = "BUUpdateComment(_:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -894,87 +782,8 @@
             filePath = "Dr.M.Aiman/Controllers/AllPosts/PostsCell/Comments /CommentsVC.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "107"
-            endingLineNumber = "107"
-            landmarkName = "BUUpdateComment(_:)"
-            landmarkType = "7">
-            <Locations>
-               <Location
-                  uuid = "ED720DF8-8651-4DBE-BA7B-814AB4618128 - 6dda4cc90a007c9e"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "Dr_M_Aiman.CommentsVC.BUUpdateComment(Any) -&gt; ()"
-                  moduleName = "Dr.M.Aiman"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/mac/Desktop/Dr.M.Aiman-main/Dr.M.Aiman/Controllers/AllPosts/PostsCell/Comments%20/CommentsVC.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "108"
-                  endingLineNumber = "108"
-                  offsetFromSymbolStart = "1807">
-               </Location>
-               <Location
-                  uuid = "ED720DF8-8651-4DBE-BA7B-814AB4618128 - 6dda4cc90a007c9e"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "Dr_M_Aiman.CommentsVC.BUUpdateComment(Any) -&gt; ()"
-                  moduleName = "Dr.M.Aiman"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/mac/Desktop/Dr.M.Aiman-main/Dr.M.Aiman/Controllers/AllPosts/PostsCell/Comments%20/CommentsVC.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "108"
-                  endingLineNumber = "108"
-                  offsetFromSymbolStart = "2192">
-               </Location>
-               <Location
-                  uuid = "ED720DF8-8651-4DBE-BA7B-814AB4618128 - 545b59029c5eff99"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "closure #1 (Swift.Optional&lt;Swift.Error&gt;, Swift.Optional&lt;Swift.Int&gt;, Swift.Optional&lt;Swift.String&gt;, Swift.Optional&lt;Swift.String&gt;) -&gt; () in Dr_M_Aiman.CommentsVC.BUUpdateComment(Any) -&gt; ()"
-                  moduleName = "Dr.M.Aiman"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/mac/Desktop/Dr.M.Aiman-main/Dr.M.Aiman/Controllers/AllPosts/PostsCell/Comments%20/CommentsVC.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "109"
-                  endingLineNumber = "109"
-                  offsetFromSymbolStart = "378">
-               </Location>
-            </Locations>
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "17EECAD1-933F-4E34-8614-41D7A0714F63"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Dr.M.Aiman/Controllers/AllPosts/PostsCell/Comments /CommentsVC.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "110"
-            endingLineNumber = "110"
-            landmarkName = "BUUpdateComment(_:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "B5FF1F6C-B97C-440A-B1DD-67F434E29808"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Dr.M.Aiman/Controllers/AllPosts/PostsCell/Comments /CommentsVC.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "113"
-            endingLineNumber = "113"
+            startingLineNumber = "186"
+            endingLineNumber = "186"
             landmarkName = "BUUpdateComment(_:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -989,10 +798,10 @@
             filePath = "Dr.M.Aiman/Controllers/AllPosts/PostsCell/Comments /CommentsVC.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "79"
-            endingLineNumber = "79"
-            landmarkName = "EditAll(Arr:HideView:TV:Type:Id:text:Image:)"
-            landmarkType = "7">
+            startingLineNumber = "118"
+            endingLineNumber = "118"
+            landmarkName = "CommentsVC"
+            landmarkType = "3">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -1005,10 +814,10 @@
             filePath = "Dr.M.Aiman/Controllers/AllPosts/PostsCell/Comments /CommentsVC.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "92"
-            endingLineNumber = "92"
-            landmarkName = "EditAll(Arr:HideView:TV:Type:Id:text:Image:)"
-            landmarkType = "7">
+            startingLineNumber = "132"
+            endingLineNumber = "132"
+            landmarkName = "CommentsVC"
+            landmarkType = "3">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -1021,8 +830,8 @@
             filePath = "Dr.M.Aiman/Controllers/AllPosts/PostsCell/PostsVC/AllPostsVc.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "137"
-            endingLineNumber = "137"
+            startingLineNumber = "152"
+            endingLineNumber = "152"
             landmarkName = "GetPosts(Type:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -1037,9 +846,105 @@
             filePath = "Dr.M.Aiman/Controllers/AllPosts/PostsCell/PostsVC/AllPostsVc.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "140"
-            endingLineNumber = "140"
+            startingLineNumber = "154"
+            endingLineNumber = "154"
             landmarkName = "GetPosts(Type:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "9F6A8538-ED95-40F3-B91D-4EA952202FA1"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Dr.M.Aiman/Controllers/AllPosts/PostsCell/Comments /CommentsVC.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "89"
+            endingLineNumber = "89"
+            landmarkName = "EditAll(Arr:HideView:TV:Type:Id:text:Image:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "34DE1C3D-5F2B-4FAB-86F3-FF82B9F32A76"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Dr.M.Aiman/Controllers/AllPosts/PostsCell/Comments /CommentsVC.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "101"
+            endingLineNumber = "101"
+            landmarkName = "EditAll(Arr:HideView:TV:Type:Id:text:Image:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "1AED8FD1-E38A-4BAE-B87F-08CC34CAF49D"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Dr.M.Aiman/Controllers/AllPosts/PostsCell/Comments /CommentsVC.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "105"
+            endingLineNumber = "105"
+            landmarkName = "EditAll(Arr:HideView:TV:Type:Id:text:Image:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "C50E58E9-16DA-4D2B-8197-0A4368BF6C22"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Dr.M.Aiman/Controllers/AllPosts/PostsCell/Comments /CommentsVC.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "267"
+            endingLineNumber = "267"
+            landmarkName = "longPress(sender:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "B743A8C8-30DC-4C31-84A4-82C0417D8548"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Dr.M.Aiman/Controllers/AllUniversities/universityTvVC/UniversitiesVC.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "134"
+            endingLineNumber = "134"
+            landmarkName = "collectionView(_:cellForItemAt:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "969DB95D-0BAE-4591-B853-9F826E85406E"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Dr.M.Aiman/Controllers/AllUniversities/universityTvVC/UniversitiesVC.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "122"
+            endingLineNumber = "122"
+            landmarkName = "collectionView(_:numberOfItemsInSection:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

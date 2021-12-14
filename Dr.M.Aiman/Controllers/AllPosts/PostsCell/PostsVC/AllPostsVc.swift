@@ -7,7 +7,6 @@
 
 import UIKit
 import Alamofire
-import PKHUD
 import ImageViewer_swift
 
 class AllPostsVc: UIViewController  {
@@ -31,8 +30,21 @@ class AllPostsVc: UIViewController  {
     @IBOutlet weak var TVeditComment: UITextView!
     var EditId = 0
     
+    var indicator:ProgressIndicator?
+
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        
+        // indicator hud ----------------//
+        indicator = ProgressIndicator(inview:self.view,loadingViewColor: UIColor.lightGray, indicatorColor: #colorLiteral(red: 0.07058823529, green: 0.3568627451, blue: 0.6352941176, alpha: 1) , msg:  SalmanLocalize.textLocalize(key: "LPleaseWait") )
+        indicator?.center = self.view.center
+        self.view.addSubview(indicator!)
+        //  end indicator hud ----------------//
+        
+        
         AllPostsTV.register(UINib(nibName: "PostBodyXibCell", bundle: nil), forCellReuseIdentifier: "PostBodyXibCell")
         self.navigationItem.rightBarButtonItem = nil
         
@@ -120,21 +132,23 @@ class AllPostsVc: UIViewController  {
     func GetPosts(Type : String )  {
         
         if Type == "reload" {
-            HUD.show(.progress)
+            self.indicator?.start()
         } else {
             self.refreshControl.beginRefreshing()
         }
+        
         if Reachable.isConnectedToNetwork(){
             API.GetAllPosts(Type: "post", pageNum: 0) { [self] (error : Error?, info : [PostModel]?, message : String?) in
                 if error == nil && info != nil{
                     if info!.isEmpty {
-                        HUD.flash(.label("No Content To Show"), delay: 2.0)
+                        self.AlertShowMessage(controller: self, text: "No Content To Show", status: 1)
                         self.AllPostsTV.isHidden = true
-                    }else{
-                        
-                        HUD.hide(animated: true, completion: nil)
-//                        self.refreshControl.endRefreshing()
+                        self.indicator?.stop()
 
+                    } else {
+                        
+                        self.indicator?.stop()
+//                        self.refreshControl.endRefreshing()
                         for data in info! {
                             //                            if data.IsPinPost == true {
                             //                                self.pinArr.append(data)
@@ -165,13 +179,16 @@ class AllPostsVc: UIViewController  {
                     }
                 } else  if  error == nil && info == nil{
                     print("info = nil ")
-                    HUD.flash(.label(message), delay: 2.0)
-                }else {
-                    HUD.flash(.label("Server Error"), delay: 2.0)
+                    self.AlertShowMessage(controller: self, text: message!, status: 1)
+                    self.indicator?.stop()
+                } else {
+                    self.AlertServerError(controller: self)
+                    self.indicator?.stop()
                 }
             }
         } else {
-            HUD.flash(.labeledError(title: "No Internet Connection", subtitle: "") , delay: 2.0)
+            self.AlertInternet(controller: self)
+            self.indicator?.stop()
         }
         
     }
@@ -207,8 +224,6 @@ class AllPostsVc: UIViewController  {
     func EditAll(Arr : [PostModel] , HideView : UIView , TV : UITableView ,  Type : API.Editenum ,  Id: Int, text: String, Image: String ){
         
         print(":::::::::::::::::::::::: \(Id)")
-        
-        
         API.EditAll(Type: Type , Id: Id , text: text, Image: Image) { (error : Error?, status : Int?, message : String?) in
             if error == nil && status == 0 {
                 for data in Arr {
@@ -218,28 +233,27 @@ class AllPostsVc: UIViewController  {
                         data.Image = Image
                         TV.reloadData()
                         HideView.isHidden = true
-                        HUD.hide(animated: true, completion: nil)
-                        
+                        self.indicator?.stop()
                         print("data.text : \(data.text )      data.image : \(data.Image)")
-                        
                     }
                 }
                 
             } else if error == nil && status == -1 {
-                HUD.flash(.label(message), delay: 2.0)
+                self.AlertShowMessage(controller: self, text: message!, status: 1)
+                self.indicator?.stop()
+
             } else {
-                HUD.flash(.label("Server Error"), delay: 2.0)
+                self.AlertServerError(controller: self)
+                self.indicator?.stop()
             }
         }
     }
     
     @IBAction func BUUpdateComment(_ sender: Any) {
         
-        HUD.show(.progress)
+        self.indicator?.start()
         if Reachable.isConnectedToNetwork(){
-            
             print(":::::::::::::::::::::::: \(EditId)")
-            
             if IVEditComment.image == nil {
                 EditAll( Arr: postArray , HideView : ViewEditComment , TV : AllPostsTV ,Type : .post , Id: EditId , text: TVeditComment.text! , Image: "" )
             } else {
@@ -247,23 +261,23 @@ class AllPostsVc: UIViewController  {
                     if error == nil && status == 0 {
                         
                         print(":::::::::::::::::::::::: \(EditId)")
-                        
                         EditAll(Arr: postArray , HideView : ViewEditComment ,  TV : AllPostsTV ,Type : .post , Id: EditId , text: TVeditComment.text! , Image: "\(imageEndPoint!)" )
                     } else  if  error == nil && status != 0 {
-                        HUD.flash(.label(message), delay: 2.0)
-                        
-                    }else {
-                        HUD.flash(.label("Server Error"), delay: 2.0)
+                        self.AlertShowMessage(controller: self, text: message!, status: 1)
+                        self.indicator?.stop()
+                    } else {
+                        self.AlertServerError(controller: self)
+                        self.indicator?.stop()
                     }
                 }
             }
             
         } else {
-            HUD.flash(.labeledError(title: "No Internet Connection", subtitle: "") , delay: 2.0)
+            self.AlertInternet(controller: self)
+            self.indicator?.stop()
         }
         
     }
-    
     
     
     @IBAction func BUCancelComment(_ sender: Any) {
@@ -276,9 +290,7 @@ extension AllPostsVc : UITableViewDataSource , UITableViewDelegate , PostActionD
     
     func Favourite(id : Int , reactType : Int , index : Int , LCount : UILabel){
         
-        // add or remove React
         if Reachable.isConnectedToNetwork(){
-            //                    HUD.show(.progress)
             API.addOrRemovePostReact(Type : "post" , PostId: id , ReactTypeId: reactType , completion: { [self] (error : Error?, status : Int, message : String?) in
                 if error == nil && status == 0 {
                     
@@ -303,13 +315,11 @@ extension AllPostsVc : UITableViewDataSource , UITableViewDelegate , PostActionD
                         }
                     }
                 } else if error == nil && status != 0 {
-                    HUD.flash(.label(message), delay: 2.0)
-                } else {
-                    HUD.flash(.label("Server Error"), delay: 2.0)
+                    self.AlertShowMessage(controller: self, text: message!, status: 1)
                 }
             }
             )} else {
-                HUD.flash(.labeledError(title: "No Internet Connection", subtitle: "") , delay: 2.0)
+                self.AlertInternet(controller: self)
             }
     }
     
@@ -348,14 +358,14 @@ extension AllPostsVc : UITableViewDataSource , UITableViewDelegate , PostActionD
         func PinOrUnpin(index : Int){
         API.addOrRemovePinPost(PostId: self.postArray[index].Id) { (error : Error?, status : Int, message : String?) in
             if error == nil && status == 0{
-                HUD.flash(.label(message!), delay: 2.0)
-                HUD.hide()
+                self.AlertShowMessage(controller: self, text: message!, status: 1)
+                self.indicator?.stop()
             }  else if error == nil && status == -1 {
-                HUD.flash(.label(message!), delay: 2.0)
-                HUD.hide()
+                self.AlertShowMessage(controller: self, text: message!, status: 1)
+                self.indicator?.stop()
             } else {
-                HUD.flash(.labeledError(title: nil , subtitle: " Server Error ") , delay: 3)
-                HUD.hide()
+                self.AlertServerError(controller: self)
+                self.indicator?.stop()
             }
             
         }
@@ -368,17 +378,17 @@ extension AllPostsVc : UITableViewDataSource , UITableViewDelegate , PostActionD
                                             (alert: UIAlertAction!) -> Void in
                                             
                                             // action here
-                                            HUD.show(.labeledProgress(title: "Adding to Favourite", subtitle: ""))
+                                            self.indicator?.start()
                                             API.addOrRemoveFavouritePost(PostId: self.postArray[index - 1].Id) { (error : Error?, status : Int, message : String?) in
                                                 if error == nil && status == 0{
-                                                    HUD.flash(.label(message!), delay: 2.0)
-                                                    HUD.hide()
+                                                    Toast.show(message: "Successfully Added", controller: self)
+                                                    self.indicator?.stop()
                                                 }  else if error == nil && status == -1 {
-                                                    HUD.flash(.label(message!), delay: 2.0)
-                                                    HUD.hide()
+                                                    self.AlertShowMessage(controller: self, text: message!, status: 1)
+                                                    self.indicator?.stop()
                                                 } else {
-                                                    HUD.flash(.labeledError(title: nil , subtitle: " Server Error ") , delay: 3)
-                                                    HUD.hide()
+                                                    self.AlertServerError(controller: self)
+                                                    self.indicator?.stop()
                                                 }
                                             }
                                             
@@ -444,15 +454,13 @@ extension AllPostsVc : UITableViewDataSource , UITableViewDelegate , PostActionD
                                                                 if error == nil && status == 0  {
                                                                     self.postArray.remove(at: index - 1 )
                                                                     self.AllPostsTV.reloadData()
-                                                                    HUD.flash(.labeledSuccess(title: message, subtitle: ""), delay: 1.0)
                                                                 } else if error == nil && status == -1 {
                                                                     self.showAlert(message: message!)
                                                                 } else {
-                                                                    self.showAlert(message: "Server Error")
+                                                                    self.AlertServerError(controller: self)
                                                                 }
                                                             } else {
-                                                                HUD.flash(.labeledError(title: "Network Error", subtitle: "Please Check your internet Connection"))
-                                                                //                            self.showAlert(message: "No Internet Connection")
+                                                                self.AlertInternet(controller: self)
                                                             }
                                                         }
                                                     })
@@ -513,8 +521,8 @@ extension AllPostsVc : UITableViewDataSource , UITableViewDelegate , PostActionD
             cell.delegate = self
             cell.indexx = indexPath.row
             cell.deleteIndex = indexPath
-//            cell.status = postArray[indexPath.row - 1].ReactType
-//            cell.postId = postArray[indexPath.row - 1].Id
+            cell.status = postArray[indexPath.row - 1].ReactType
+            cell.postId = postArray[indexPath.row - 1].Id
             
             cell.cellMainLabel.text   = postArray[indexPath.row - 1].FirstName
             cell.LoveNumLaOutlet.text = "\(postArray[indexPath.row - 1].ReactCount)"

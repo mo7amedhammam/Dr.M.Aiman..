@@ -26,7 +26,6 @@ class RefernceVC: UIViewController {
 extension RefernceVC : UITableViewDelegate , UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         //        return Shared.shared.Links.count
-        
         return selectedCourseVideosNumber
     }
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {

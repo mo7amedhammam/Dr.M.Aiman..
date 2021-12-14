@@ -6,7 +6,6 @@
 //
 
 import UIKit
-import PKHUD
 
 class StartScreenVC: UIViewController {
     
@@ -20,8 +19,18 @@ class StartScreenVC: UIViewController {
     
     let currentDeviceMacAddress = UIDevice.current.identifierForVendor?.uuidString
     
+    var indicator:ProgressIndicator?
+
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        // indicator hud ----------------//
+        indicator = ProgressIndicator(inview:self.view,loadingViewColor: UIColor.lightGray, indicatorColor: #colorLiteral(red: 0.07058823529, green: 0.3568627451, blue: 0.6352941176, alpha: 1) , msg:  SalmanLocalize.textLocalize(key: "LPleaseWait") )
+        indicator?.center = self.view.center
+        self.view.addSubview(indicator!)
+        //  end indicator hud ----------------//
+        
         
         //        let gesture = UITapGestureRecognizer(target: self, action:  #selector(self.checkActionPhone))
         //        self.VIewPhone.addGestureRecognizer(gesture)
@@ -43,21 +52,11 @@ class StartScreenVC: UIViewController {
                 self.showAlert(message: "Please Enter Your Email", title: "Whatch out")
             } else if TfPassword.text!.isEmpty {
                 self.showAlert(message: "Please Enter Your Password", title: "Whatch out")
-            } else{
+            } else {
                 
                 UserLogin(Email: TfEmail.text!, MacAdress: currentDeviceMacAddress! , Password: TfPassword.text! )
-
-//                if Helper.isValidEmail(emailStr: TfEmail.text!) == false {
-//                    // phone
-//                    UserLogin(Email: TfEmail.text! , MacAdress: currentDeviceMacAddress! , Password: TfPassword.text!)
-//                } else {
-//                    // email
-//                    UserLogin(Email: TfEmail.text!, MacAdress: currentDeviceMacAddress! , Password: TfPassword.text! )
-//                }
-                
             }
         } else {
-            // no internet
             self.showAlert(message: "No Internet Connection ", title: "Error")
         }
     }
@@ -75,43 +74,44 @@ class StartScreenVC: UIViewController {
     }
     //    let mac : String!
     func UserLogin(Email: String , MacAdress: String , Password: String)  {
+        self.indicator?.start()
         if Reachable.isConnectedToNetwork(){
-            HUD.show(.progress)
             API.userLogin(Email: Email, MacAdress: MacAdress , Password: Password) { (error : Error?, status : Int, message : String?, token : String?)  in
                 if error == nil && status == 0 {
-                    HUD.hide(animated: true, completion: nil)
-                    //                    accessToken = token
                     Helper.setPasswordSave(password: self.TfPassword.text!)
                     self.UserInfo()
                 } else if error == nil && status == -1 {
-                    HUD.hide(animated: true, completion: nil)
-                    HUD.flash(.label(message), delay: 2.0)
-                }else{
+                    self.AlertShowMessage(controller: self, text: message!, status: 1)
+                    self.indicator?.stop()
+                } else {
+                    self.AlertServerError(controller: self)
+                    self.indicator?.stop()
                 }
             }
         } else {
-            HUD.flash(.labeledError(title: "No Internet Connection", subtitle: "") , delay: 2.0)
+            self.AlertInternet(controller: self)
+            self.indicator?.stop()
         }
     }
     
     func UserInfo()  {
         if Reachable.isConnectedToNetwork(){
-            HUD.show(.progress)
             API.GetUserInfo(completion: { (error : Error?, status : Int, message : String?) in
                 if error == nil && status == 0 {
-                    // get user data
-                    // HUD.flash(.label("No Content To Show"), delay: 2.0)
-                    HUD.hide(animated: true, completion: nil)
-                    //                    accessToken = token
+                    self.indicator?.stop()
                     self.goToMain()
                 } else if error == nil && status != 0 {
-                    HUD.hide(animated: true, completion: nil)
-                    HUD.flash(.label(message), delay: 2.0)
-                }else{
+                    self.indicator?.stop()
+                    self.AlertShowMessage(controller: self, text: message!, status: 1)
+                } else {
+                    self.AlertServerError(controller: self)
+                    self.indicator?.stop()
                 }
             }
+            
             )} else {
-                HUD.flash(.labeledError(title: "No Internet Connection", subtitle: "") , delay: 2.0)
+                self.indicator?.stop()
+                self.AlertInternet(controller: self)
             }
     }
     
@@ -119,10 +119,7 @@ class StartScreenVC: UIViewController {
     
     
     func goToMain(){
-        
-        
         Helper.GoToAnyScreen(storyboard: "Main", identifier: "JBTabBarController")
-        
         //        let vc = storyboard?.instantiateViewController(identifier: "JBTabBarController") as Any
         //        self.navigationController?.pushViewController(vc as! UIViewController, animated: true)
     }

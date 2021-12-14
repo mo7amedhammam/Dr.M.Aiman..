@@ -68,15 +68,15 @@ class SalmanLocalize : NSObject {
     
     
     class func textLocalize (key : String) -> String {
-        Shared.shared.lang = UserDefaults.standard.string(forKey: "language")
-        let str : String!
-        if Shared.shared.lang != nil {
-             str = key.localizableString(loc: Shared.shared.lang)
-        } else {
-            Shared.shared.lang = "ar"
-             str = key.localizableString(loc: Shared.shared.lang)
-        }
-        return str
+//        Shared.shared.lang = UserDefaults.standard.string(forKey: "language")
+//        let str : String!
+//        if Shared.shared.lang != nil {
+//             str = key.localizableString(loc: Shared.shared.lang)
+//        } else {
+//            Shared.shared.lang = "ar"
+//             str = key.localizableString(loc: Shared.shared.lang)
+//        }
+        return "please wait...."
     }
     
     class func UILabeltextAlignment (label : UILabel) {

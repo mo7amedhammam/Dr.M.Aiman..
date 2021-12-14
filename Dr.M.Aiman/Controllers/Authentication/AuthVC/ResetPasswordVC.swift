@@ -6,57 +6,60 @@
 //
 
 import UIKit
-import PKHUD
 
 class ResetPasswordVC: UIViewController {
+    
     @IBOutlet weak var TFEmail: UITextField!
     var currentDeviceMacAddress : String!
+    var indicator:ProgressIndicator?
 
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        // Do any additional setup after loading the view.
+        // indicator hud ----------------//
+        indicator = ProgressIndicator(inview:self.view,loadingViewColor: UIColor.lightGray, indicatorColor: #colorLiteral(red: 0.07058823529, green: 0.3568627451, blue: 0.6352941176, alpha: 1) , msg:  SalmanLocalize.textLocalize(key: "LPleaseWait") )
+        indicator?.center = self.view.center
+        self.view.addSubview(indicator!)
+        //  end indicator hud ----------------//
+        
     }
     
     @IBAction func BuRessetPassword(_ sender: Any) {
         if Reachable.isConnectedToNetwork() {
             if TFEmail.text!.isEmpty || Helper.isValidEmail(emailStr: TFEmail.text!) == false {
                 self.showAlert(message: "Please Enter Your Email", title: "Error")
-            }else{
-//    Call API for resseting Password
+            } else {
                 ChangePassword()
             }
         } else {
-            // no internet
-            self.showAlert(message: "No Internet Connection ", title: "Error")
+            self.AlertInternet(controller: self)
         }
     }
     
     @IBAction func BuBack(_ sender: Any) {
         self.dismiss(animated: true, completion: nil)
-        
     }
     
     func ChangePassword() {
+        self.indicator?.start()
         if Reachable.isConnectedToNetwork(){
-            HUD.show(.labeledProgress(title: "Sendibg Request", subtitle: ""))
             API.userChangePassword(Email: TFEmail.text!, MacAdress: currentDeviceMacAddress!) { (error : Error?, status : Int, message : String?) in
                 if error == nil && status == 0{
-                    //                    HUD.flash(.label("No Content To Show"), delay: 2.0)
-                    HUD.hide(animated: true, completion: nil)
-                    HUD.flash(.labeledSuccess(title: "", subtitle: "New Password Sent To your Email"))
+                    self.indicator?.stop()
                     self.dismiss(animated: true, completion: nil)
                 } else if error == nil && status != 0 {
-                    HUD.hide(animated: true, completion: nil)
-                    HUD.flash(.label(message), delay: 2.0)
-                }else{
+                    self.indicator?.stop()
+                    self.AlertShowMessage(controller: self, text: message!, status: 1)
+                } else {
+                    self.AlertServerError(controller: self)
+                    self.indicator?.stop()
                 }
             }
         } else {
-            HUD.flash(.labeledError(title: "No Internet Connection", subtitle: "") , delay: 2.0)
+            self.AlertInternet(controller: self)
+            self.indicator?.stop()
+
         }
     }
-
-
 }

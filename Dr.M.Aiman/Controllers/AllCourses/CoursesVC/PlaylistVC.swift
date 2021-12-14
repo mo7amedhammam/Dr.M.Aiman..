@@ -6,7 +6,6 @@
 //
 
 import UIKit
-import PKHUD
 
 class PlaylistVC: UIViewController {
 
@@ -16,11 +15,23 @@ class PlaylistVC: UIViewController {
 
     @IBOutlet weak var LAcourseName: UILabel!
     @IBOutlet weak var IVSelectedcourse: UIImageView!
+    
+    var indicator:ProgressIndicator?
+    var arrPlaylists = [PlaylistModel]()
+
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+
+         // indicator hud ----------------//
+        indicator = ProgressIndicator(inview:self.view,loadingViewColor: UIColor.lightGray, indicatorColor: #colorLiteral(red: 0.07058823529, green: 0.3568627451, blue: 0.6352941176, alpha: 1) , msg:  SalmanLocalize.textLocalize(key: "LPleaseWait") )
+        indicator?.center = self.view.center
+        self.view.addSubview(indicator!)
+         //  end indicator hud ----------------//
+    
         self.PlaylistCollectionViewList.delegate = self
         self.PlaylistCollectionViewList.dataSource = self
-
         
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .vertical //.horizontal
@@ -32,15 +43,16 @@ class PlaylistVC: UIViewController {
         getPlayLists()
     }
 
-    var arrPlaylists = [PlaylistModel]()
     func getPlayLists() {
+        self.indicator?.start()
         if Reachable.isConnectedToNetwork(){
             API.GetPlaylistByCourse(id: self.selectedCourseID!) { (error : Error?, Playlists : [PlaylistModel]?, message : String?) in
                 
                 if error == nil && Playlists != nil {
                     if Playlists!.isEmpty {
-                        HUD.flash(.label("No Content To Show"), delay: 2.0)
+                        self.AlertShowMessage(controller: self, text: "No Content To Show", status: 1)
                         self.PlaylistCollectionViewList.isHidden = true
+                        self.indicator?.stop()
                     }else{
                         for data in Playlists!  {
                             if self.PlaylistCollectionViewList.isHidden == true{
@@ -49,22 +61,23 @@ class PlaylistVC: UIViewController {
                             
                             self.arrPlaylists.append(data)
 //                            self.ArrCourses.append(contentsOf: data.Courses)
-                            
-                            print("Arr course count :\(self.arrPlaylists.count)")
-                            
                             self.PlaylistCollectionViewList.reloadData()
-                            HUD.hide(animated: true, completion: nil)
+                            self.indicator?.stop()
+                            
                         }
                         
                     }
                 } else  if  error == nil && Playlists == nil {
-                    HUD.flash(.label(message), delay: 2.0)
+                    self.AlertShowMessage(controller: self, text: message!, status: 1)
+                    self.indicator?.stop()
                 }else {
-                    HUD.flash(.label("Server Error"), delay: 2.0)
+                    self.AlertServerError(controller: self)
+                    self.indicator?.stop()
                 }
             }
         } else {
-            HUD.flash(.labeledError(title: "No Internet Connection", subtitle: "") , delay: 2.0)
+            self.AlertInternet(controller: self)
+            self.indicator?.stop()
         }
     }
 
@@ -102,6 +115,5 @@ extension PlaylistVC : UICollectionViewDelegate , UICollectionViewDataSource, UI
 
         self.navigationController?.pushViewController(vc, animated: true)
     }
-    
     
 }

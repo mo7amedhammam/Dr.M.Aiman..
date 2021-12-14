@@ -9,9 +9,9 @@
 import UIKit
 import CountdownLabel
 import Alamofire
-import PKHUD
 
 class VerificationCodeVC: UIViewController {
+    
     @IBOutlet weak var LVerificationCode: UILabel!    // VerificationCode
     @IBOutlet weak var LCountDown: CountdownLabel!
     @IBOutlet weak var LEnterVerificationCode: UILabel!   // EnterVerificationCode
@@ -29,6 +29,7 @@ class VerificationCodeVC: UIViewController {
     @IBOutlet weak var BUConfirm: UIButton!         // Confirm
     @IBOutlet weak var ViewVerificationIndicator: UIView!
     @IBOutlet weak var VerificationIndicator: UIActivityIndicatorView!
+    
     var PhoneNumber : String!
     let macAddress = UIDevice.current.identifierForVendor
     

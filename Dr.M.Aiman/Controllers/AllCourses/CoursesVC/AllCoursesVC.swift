@@ -11,6 +11,7 @@ import UIKit
 class AllCoursesVC: UIViewController {
 
     @IBOutlet weak var CourseCollectionViewList: UICollectionView!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         

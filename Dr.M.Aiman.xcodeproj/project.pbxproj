@@ -13,6 +13,7 @@
 		0434AF1D2691B75400BD0502 /* openPdfVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0434AF1C2691B75400BD0502 /* openPdfVC.swift */; };
 		04797C8E26889B8C00E58367 /* CommentsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04797C8D26889B8C00E58367 /* CommentsVC.swift */; };
 		04797C9626889BCA00E58367 /* CommentsTVCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04797C9526889BCA00E58367 /* CommentsTVCell.swift */; };
+		04B4AD55269F76F500E47B1B /*  Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 04B4AD57269F76F500E47B1B /*  Localizable.strings */; };
 		04E55AD9268E5DE200A6167D /* SubCategoryPdfVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04E55AD8268E5DE200A6167D /* SubCategoryPdfVC.swift */; };
 		04E55ADE268E5E0100A6167D /* SubCategoryPdfTVCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04E55ADD268E5E0100A6167D /* SubCategoryPdfTVCell.swift */; };
 		1A2B594B2652F0A700CC1634 /* AllCoursesVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A2B594A2652F0A700CC1634 /* AllCoursesVC.swift */; };
@@ -118,6 +119,10 @@
 		0434AF1C2691B75400BD0502 /* openPdfVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = openPdfVC.swift; sourceTree = "<group>"; };
 		04797C8D26889B8C00E58367 /* CommentsVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentsVC.swift; sourceTree = "<group>"; };
 		04797C9526889BCA00E58367 /* CommentsTVCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentsTVCell.swift; sourceTree = "<group>"; };
+		04B4AD4B269F6F1900E47B1B /* ar */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ar; path = ar.lproj/Main.strings; sourceTree = "<group>"; };
+		04B4AD4F269F6F2900E47B1B /* ar */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ar; path = ar.lproj/LaunchScreen.strings; sourceTree = "<group>"; };
+		04B4AD56269F76F500E47B1B /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = "en.lproj/ Localizable.strings"; sourceTree = "<group>"; };
+		04B4AD5B269F770000E47B1B /* ar */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ar; path = "ar.lproj/ Localizable.strings"; sourceTree = "<group>"; };
 		04E55AD8268E5DE200A6167D /* SubCategoryPdfVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubCategoryPdfVC.swift; sourceTree = "<group>"; };
 		04E55ADD268E5E0100A6167D /* SubCategoryPdfTVCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubCategoryPdfTVCell.swift; sourceTree = "<group>"; };
 		0A28674880F150F6981CEACF /* Pods_Dr_M_AimanTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Dr_M_AimanTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -325,14 +330,14 @@
 			children = (
 				1AC860C126528995008C4AE6 /* AppDelegate.swift */,
 				1AC860C326528995008C4AE6 /* SceneDelegate.swift */,
+				1AC860D226528996008C4AE6 /* Info.plist */,
+				1AC860CA26528995008C4AE6 /* Dr_M_Aiman.xcdatamodeld */,
 				1AC8613A26528A84008C4AE6 /* Services */,
 				1AC8613926528A7C008C4AE6 /* Model */,
 				1AC8613526528A75008C4AE6 /* View */,
 				1AC8612E26528A6A008C4AE6 /* Controllers */,
 				1AC8612D26528A60008C4AE6 /* Extensions */,
 				1AC8612926528A52008C4AE6 /* FileSupport */,
-				1AC860D226528996008C4AE6 /* Info.plist */,
-				1AC860CA26528995008C4AE6 /* Dr_M_Aiman.xcdatamodeld */,
 			);
 			path = Dr.M.Aiman;
 			sourceTree = "<group>";
@@ -368,6 +373,7 @@
 				1AC8614826528B39008C4AE6 /* Shared.swift */,
 				1AC8614426528B34008C4AE6 /* Style.swift */,
 				1AC860CD26528996008C4AE6 /* Assets.xcassets */,
+				04B4AD57269F76F500E47B1B /*  Localizable.strings */,
 			);
 			path = FileSupport;
 			sourceTree = "<group>";
@@ -824,6 +830,7 @@
 			knownRegions = (
 				en,
 				Base,
+				ar,
 			);
 			mainGroup = 1AC860B526528995008C4AE6;
 			productRefGroup = 1AC860BF26528995008C4AE6 /* Products */;
@@ -845,6 +852,7 @@
 				1AC861D72652A6F2008C4AE6 /* logo.mp4 in Resources */,
 				90D33A03267A1C4900B3A81B /* UniversityCell.xib in Resources */,
 				90CE777D2676019700DAD0C9 /* DroidKufi-Regular.ttf in Resources */,
+				04B4AD55269F76F500E47B1B /*  Localizable.strings in Resources */,
 				1AC860D126528996008C4AE6 /* LaunchScreen.storyboard in Resources */,
 				9088E758267A49E700F59D7B /* coursesCell.xib in Resources */,
 				908B5E4E2663A61E001CC341 /* PostBodyXibCell.xib in Resources */,
@@ -1084,10 +1092,20 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
+		04B4AD57269F76F500E47B1B /*  Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				04B4AD56269F76F500E47B1B /* en */,
+				04B4AD5B269F770000E47B1B /* ar */,
+			);
+			name = " Localizable.strings";
+			sourceTree = "<group>";
+		};
 		1AC860C726528995008C4AE6 /* Main.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
 				1AC860C826528995008C4AE6 /* Base */,
+				04B4AD4B269F6F1900E47B1B /* ar */,
 			);
 			name = Main.storyboard;
 			sourceTree = "<group>";
@@ -1096,6 +1114,7 @@
 			isa = PBXVariantGroup;
 			children = (
 				1AC860D026528996008C4AE6 /* Base */,
+				04B4AD4F269F6F2900E47B1B /* ar */,
 			);
 			name = LaunchScreen.storyboard;
 			sourceTree = "<group>";
@@ -1107,6 +1126,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
@@ -1168,6 +1188,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
@@ -1233,6 +1254,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				MARKETING_VERSION = 1.1;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.CodePro.Dr-M-Aiman";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -1255,7 +1277,8 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "com.CodePro.Dr-M-Aiman";
+				MARKETING_VERSION = 1.1;
+				PRODUCT_BUNDLE_IDENTIFIER = "CodePro.Dr-M-Aiman2";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 5.0;

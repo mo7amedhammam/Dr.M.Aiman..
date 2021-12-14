@@ -6,7 +6,6 @@
 //
 
 import UIKit
-import PKHUD
 
 class SettingVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
     
@@ -15,8 +14,8 @@ class SettingVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         tableviewSetup()
-        settingLabelNames.remove(at: [1,3,4,5,6])
-        logoImage.remove(at: [1,3,4,5,6])
+        settingLabelNames.remove(at: [1,5,6])
+        logoImage.remove(at: [1,5,6])
     }
     
     
@@ -82,8 +81,6 @@ class SettingVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
         let alert = UIAlertController(title: nil , message: nil , preferredStyle: .actionSheet)
         alert.addAction(UIAlertAction(title: "Sign out" , style: .default, handler: { (action) in
             // action Here
-            //                    self.showAlert(message: "Edited" )
-            HUD.flash(.labeledProgress(title: "Signing you out", subtitle: ""), delay: 2.0)
             Helper.logout()
             Helper.GoToAnyScreen(storyboard: "Main", identifier: "StartScreenVC")
         }))

@@ -13,6 +13,7 @@ class HomeTBC: UITabBarController {
         super.viewDidLoad()
 
         self.selectedIndex = 4
-        // Do any additional setup after loading the view.
+
     }
+    
 }

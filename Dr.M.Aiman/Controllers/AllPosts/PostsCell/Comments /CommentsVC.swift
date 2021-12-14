@@ -6,7 +6,6 @@
 //
 
 import UIKit
-import PKHUD
 import ImageViewer_swift
 import YouTubePlayer
 
@@ -23,6 +22,7 @@ class CommentsVC: UIViewController {
     @IBOutlet weak var BtnCancelComment: UIButton!
     
     @IBOutlet weak var IVFooterSuper: UIImageView!
+    
     var ArrSuper : PostModel!
     var ArrNew =  [PostModel]()
     var ArrComm = [CommentsModel]()
@@ -36,10 +36,22 @@ class CommentsVC: UIViewController {
     var imagePicker = UIImagePickerController()
     var EditId   = 0
     
+    var indicator : ProgressIndicator?
+
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         // Do any additional setup after loading the view.
+        
+        
+        // indicator hud ----------------//
+        indicator = ProgressIndicator(inview:self.view,loadingViewColor: UIColor.lightGray, indicatorColor: #colorLiteral(red: 0.07058823529, green: 0.3568627451, blue: 0.6352941176, alpha: 1) , msg:  SalmanLocalize.textLocalize(key: "LPleaseWait") )
+        indicator?.center = self.view.center
+        self.view.addSubview(indicator!)
+        //  end indicator hud ----------------//
+        
+                
         TVComments.dataSource = self
         TVComments.delegate   = self
         ViewEditComment.isHidden = true
@@ -71,9 +83,7 @@ class CommentsVC: UIViewController {
         showPhotoMenu()
     }
     
-    
-    class func EditAll(Arr : [CommentsModel] , HideView : UIView , TV : UITableView ,  Type : API.Editenum ,  Id: Int, text: String, Image: String ){
-        
+    func EditAll (Arr : [CommentsModel] , HideView : UIView , TV : UITableView ,  Type : API.Editenum ,  Id: Int, text: String, Image: String ) {
         API.EditAll(Type: Type , Id: Id , text: text, Image: Image) { (error : Error?, status : Int?, message : String?) in
             if error == nil && status == 0 {
                 
@@ -83,41 +93,103 @@ class CommentsVC: UIViewController {
                         data.text  = text
                         data.Image = Image
                         HideView.isHidden = true
-                        HUD.hide(animated: true, completion: nil)
+                        self.indicator!.stop()
                         TV.reloadData()
                     }
                 }
-     
             } else if error == nil && status == -1 {
-                HUD.flash(.label(message), delay: 2.0)
+                self.AlertShowMessage(controller: self, text: message!, status: 1)
+                self.indicator?.stop()
+
             } else {
-                HUD.flash(.label("Server Error"), delay: 2.0)
+                self.AlertServerError(controller: self)
+                self.indicator?.stop()
+
             }
         }
     }
     
+    
+    
+//    class func EditAll(Arr : [CommentsModel] , HideView : UIView , TV : UITableView ,  Type : API.Editenum ,  Id: Int, text: String, Image: String ){
+//
+//        API.EditAll(Type: Type , Id: Id , text: text, Image: Image) { (error : Error?, status : Int?, message : String?) in
+//            if error == nil && status == 0 {
+//
+//                for data in Arr {
+//                    if data.Id == Id {
+//                        print(data.Id)
+//                        data.text  = text
+//                        data.Image = Image
+//                        HideView.isHidden = true
+//                        self.indicator!.stop()
+//
+//                        TV.reloadData()
+//                    }
+//                }
+//
+//            } else if error == nil && status == -1 {
+//                self.AlertShowMessage(controller: self, text: message!, status: 1)
+//                self.indicator?.stop()
+//
+//            } else {
+//                self.AlertServerError(controller: self)
+//                self.indicator?.stop()
+//
+//            }
+//        }
+//    }
+    
     @IBAction func BUUpdateComment(_ sender: Any) {
         
-        HUD.show(.progress)
+        self.indicator?.start()
+        
         if Reachable.isConnectedToNetwork(){
-            
             if IVEditComment.image == nil {
-                CommentsVC.EditAll( Arr: ArrComm , HideView : ViewEditComment , TV : TVComments ,Type : .postComment , Id: EditId , text: TVeditComment.text! , Image: "" )
+                if Shared.shared.PostLive == 0 {
+                    EditAll( Arr: ArrComm , HideView : ViewEditComment , TV : TVComments ,Type : .postComment , Id: EditId , text: TVeditComment.text! , Image: "" )
+                } else {
+                    EditAll( Arr: ArrComm , HideView : ViewEditComment , TV : TVComments ,Type : .LiveComment , Id: EditId , text: TVeditComment.text! , Image: "" )
+                }
+              
             } else {
                 
-                API.uploadImage(image: IVEditComment.image!) { [self] (error : Error?, status : Int?, message : String? ,imageEndPoint : String?) in
-                    if error == nil && status == 0 {
-                        CommentsVC.EditAll(Arr: ArrComm , HideView : ViewEditComment ,  TV : TVComments ,Type : .postComment , Id: EditId , text: TVeditComment.text! , Image: "\(imageEndPoint!)" )
-                    } else  if  error == nil && status == -1  {
-                        HUD.flash(.label(message), delay: 2.0)
-                    }else {
-                        HUD.flash(.label("Server Error"), delay: 2.0)
+                if Shared.shared.PostLive == 0 {
+                    API.uploadImage(image: IVEditComment.image!) { [self] (error : Error?, status : Int?, message : String? ,imageEndPoint : String?) in
+                        if error == nil && status == 0 {
+                            EditAll(Arr: ArrComm , HideView : ViewEditComment ,  TV : TVComments ,Type : .postComment , Id: EditId , text: TVeditComment.text! , Image: "\(imageEndPoint!)" )
+                        } else  if  error == nil && status == -1  {
+                            self.AlertShowMessage(controller: self, text: message!, status: 1)
+                            self.indicator?.stop()
+                        } else {
+                            self.AlertServerError(controller: self)
+                            self.indicator?.stop()
+
+                        }
                     }
+                    
+                } else {
+                    API.uploadImage(image: IVEditComment.image!) { [self] (error : Error?, status : Int?, message : String? ,imageEndPoint : String?) in
+                        if error == nil && status == 0 {
+                            EditAll(Arr: ArrComm , HideView : ViewEditComment ,  TV : TVComments ,Type : .LiveComment , Id: EditId , text: TVeditComment.text! , Image: "\(imageEndPoint!)" )
+                        } else  if  error == nil && status == -1  {
+                            self.AlertShowMessage(controller: self, text: message!, status: 1)
+                            self.indicator?.stop()
+                        } else {
+                            self.AlertServerError(controller: self)
+                            self.indicator?.stop()
+
+                        }
+                    }
+                    
                 }
+            
             }
                   
         } else {
-            HUD.flash(.labeledError(title: "No Internet Connection", subtitle: "") , delay: 2.0)
+            self.AlertInternet(controller: self)
+            self.indicator?.stop()
+
         }
     
     }
@@ -166,6 +238,7 @@ class CommentsVC: UIViewController {
             if let indexPath = TVComments.indexPathForRow(at: touchPoint) {
                 // your code here, get the row for the indexPath or do whatever you want
                 
+                
                 let optionMenu = UIAlertController(title: nil, message: "Delete Comment ", preferredStyle: .actionSheet)
                 
                 let deleteAction = UIAlertAction(title: "Delete", style: .destructive, handler:
@@ -188,6 +261,10 @@ class CommentsVC: UIViewController {
                                                         // action
                                                         TVeditComment.text = ArrComm[indexPath.row].text
                                                         
+                                                        ViewEditComment.isHidden = false
+                                                        EditId   = ArrComm[indexPath.row].Id
+                                                        print("id comment : \(ArrComm[indexPath.row].Id)")
+
                                                         
                                                         if ArrComm[indexPath.row].Image == "" {
                                                             BtnCancelComment.isHidden = true
@@ -202,8 +279,7 @@ class CommentsVC: UIViewController {
                                                             Helper.SetImage(EndPoint: ArrComm[indexPath.row].Image, image: IVEditComment, name: "2", status: 1)
                                                         }
                                                       
-                                                        ViewEditComment.isHidden = false
-                                                        EditId   = ArrComm[indexPath.row].Id
+                                                   
                                                                                                        
                                                     })
                 
@@ -231,20 +307,24 @@ class CommentsVC: UIViewController {
         
     }
     func DeleteComment ( Type : String ,  Id  : Int , IndexPath : IndexPath){
-        HUD.show(.progress)
+        self.indicator?.start()
         if Reachable.isConnectedToNetwork(){
             API.deletePostComment(Type: Type , Id: Id) { (error : Error?, status : Int?, message : String?) in
                 if status == 0 {
-                    
                     self.ArrComm.remove(at: IndexPath.item)
-                    HUD.hide()
+                    self.indicator?.stop()
                     self.TVComments.reloadData()
+                } else if status == -1 {
+                    self.indicator?.stop()
+                    self.AlertShowMessage(controller: self, text: message!, status: 1)
                 } else {
-                    HUD.flash(.labeledSuccess(title: message!, subtitle: ""), delay: 3)
+                    self.AlertServerError(controller: self)
+                    self.indicator?.stop()
                 }
             }
         } else {
-            HUD.flash(.labeledError(title: "No Internet Connection", subtitle: "") , delay: 2.0)
+            self.indicator?.stop()
+            self.AlertInternet(controller: self)
         }
     }
     
@@ -257,13 +337,14 @@ class CommentsVC: UIViewController {
     }
     
     func GetCommentOfPost(Type : String)  {
-        HUD.show(.progress)
+        self.indicator?.start()
         if Reachable.isConnectedToNetwork(){
             API.GetAllPosts(Type : Type , pageNum: 0) { [self] (error : Error?, info : [PostModel]?, message : String?) in
                 if error == nil && info != nil{
                     if info!.isEmpty {
-                        HUD.flash(.label("No Content To Show"), delay: 2.0)
-                    }else{
+                        self.AlertShowMessage(controller: self, text: "No Content To Show", status: 1)
+                        self.indicator?.stop()
+                    } else {
                         for data in info! {
                             if ArrSuper.Id == data.Id {
                                 self.ArrNew.append(data)
@@ -275,19 +356,23 @@ class CommentsVC: UIViewController {
                                 
                                 let index = IndexPath(row: self.ArrComm.count-1, section: 0)
                                 TVComments.scrollToRow(at: index , at: .bottom, animated: true)
-                                HUD.hide(animated: true, completion: nil)
+                                self.indicator?.stop()
                             }
                         }
                         
                     }
-                } else  if  error == nil && info == nil{
-                    HUD.flash(.label(message), delay: 2.0)
-                }else {
-                    HUD.flash(.label("Server Error"), delay: 2.0)
+                } else if  error == nil && info == nil{
+                    self.AlertShowMessage(controller: self, text: message!, status: 1)
+                    self.indicator?.stop()
+                } else {
+                    self.AlertServerError(controller: self)
+                    self.indicator?.stop()
+
                 }
             }
         } else {
-            HUD.flash(.labeledError(title: "No Internet Connection", subtitle: "") , delay: 2.0)
+            self.AlertInternet(controller: self)
+            self.indicator?.stop()
         }
         
     }
@@ -307,7 +392,8 @@ extension CommentsVC : UITableViewDataSource , UITableViewDelegate {
         let cell = tableView.dequeueReusableCell(withIdentifier: "CommentsTVCell1", for: indexPath) as! CommentsTVCell
         cell.LaName.text    = ArrComm[indexPath.row].FirstName
         cell.LaComment.text = ArrComm[indexPath.row].text
-        cell.LaTimeAgo.text = ArrComm[indexPath.row].CreationTime
+        // ArrComm[indexPath.row].CreationTime
+        cell.LaTimeAgo.text = ""
                 Helper.SetImage(EndPoint: ArrComm[indexPath.row].UserImage, image: cell.IVPerson, name: "2", status: 1)
         if ArrComm[indexPath.row].Image.isEmpty == true  || ArrComm[indexPath.row].Image == "" {
             cell.HeightViewImage.constant = 0
@@ -350,10 +436,9 @@ extension CommentsVC : UITableViewDataSource , UITableViewDelegate {
         }
         
         cell.sendMessage = { [self] in
-            
+            self.indicator?.start()
+
             if Reachable.isConnectedToNetwork() {
-                HUD.show(.progress)
-                
                 if cell.IVFooter.image == nil {
                     if Shared.shared.PostLive == 0 {
                         AddCommentOnly(Type: "post", Id: ArrSuper.Id , text :  cell.TVAddComment.text , Img: "")
@@ -361,7 +446,6 @@ extension CommentsVC : UITableViewDataSource , UITableViewDelegate {
                         AddCommentOnly(Type: "live", Id: ArrSuper.Id , text :  cell.TVAddComment.text , Img: "")
                     }
                 } else {
-                        HUD.show(.labeledProgress(title: "Uploading", subtitle: ""))
                         API.uploadImage(image: cell.IVFooter.image!) { (error : Error?, status : Int?, message : String? ,imageEndPoint : String?) in
                             if error == nil && status == 0 {
                                 if Shared.shared.PostLive == 0 {
@@ -370,15 +454,21 @@ extension CommentsVC : UITableViewDataSource , UITableViewDelegate {
                                     AddCommentOnly(Type: "live", Id: ArrSuper.Id , text :  cell.TVAddComment.text , Img: "\(imageEndPoint!)")
                                 }
                             } else  if  error == nil && status != 0 {
-                                HUD.flash(.label(message), delay: 2.0)
+                                self.AlertShowMessage(controller: self, text: message!, status: 1)
+                                self.indicator?.stop()
+
                             }else {
-                                HUD.flash(.label("Server Error"), delay: 2.0)
+                                self.AlertServerError(controller: self)
+                                self.indicator?.stop()
+
                             }
                         }
                 }
                 
             } else {
-                HUD.flash(.labeledError(title: "no internet connection", subtitle: "") , delay: 3)
+                self.AlertInternet(controller: self)
+                self.indicator?.stop()
+
             }
             
         }
@@ -397,13 +487,11 @@ extension CommentsVC : UITableViewDataSource , UITableViewDelegate {
                         GetCommentOfPost(Type: "live")
                     }
                 } else {
-                    HUD.flash(.labeledSuccess(title: message!, subtitle: ""), delay: 3)
+                    self.showAlert(message: message!)
                 }
                 
             }
         }
-        
-        
         
         return cell
         
@@ -420,7 +508,5 @@ extension CommentsVC : UITableViewDataSource , UITableViewDelegate {
     //    func tableView(_ tableView: UITableView, estimatedHeightForFooterInSection section: Int) -> CGFloat {
     //        return UITableView.automaticDimension
     //    }
-    //
-    
     
 }

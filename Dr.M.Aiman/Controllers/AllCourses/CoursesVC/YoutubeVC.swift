@@ -18,6 +18,9 @@ class YoutubeVC: UIViewController , YouTubePlayerDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        
+        
         videoPlayer.delegate = self
         videoPlayer.isUserInteractionEnabled = false
         

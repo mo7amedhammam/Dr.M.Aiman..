@@ -8,7 +8,6 @@
 import UIKit
 import PDFKit
 import MobileCoreServices
-import PKHUD
 
 class SubCategoryPdfVC: UIViewController {
 
@@ -25,11 +24,7 @@ class SubCategoryPdfVC: UIViewController {
     
     @IBOutlet weak var BtnSelectPdf: UIButton!
     @IBOutlet weak var BtnAddOrUpdate: UIButton!
-    
-    
-    
-    
-    
+  
     var pdfView = PDFView()
     var PickedPDFData : Data?
     var pdfUrl : URL?
@@ -40,11 +35,18 @@ class SubCategoryPdfVC: UIViewController {
     
     var AddOrUpdate     = 0
     var idForUpdate     = 0
+    
+    var indicator:ProgressIndicator?
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
-
+        // indicator hud ----------------//
+        indicator = ProgressIndicator(inview:self.view,loadingViewColor: UIColor.lightGray, indicatorColor: #colorLiteral(red: 0.07058823529, green: 0.3568627451, blue: 0.6352941176, alpha: 1) , msg:  SalmanLocalize.textLocalize(key: "LPleaseWait") )
+        indicator?.center = self.view.center
+        self.view.addSubview(indicator!)
+        //  end indicator hud ----------------//
+        
         ViewAddPdf.isHidden = true
         TVSub.dataSource = self
         TVSub.delegate   = self
@@ -81,57 +83,50 @@ class SubCategoryPdfVC: UIViewController {
         self.dismiss(animated: true, completion: nil)
         ViewAddPdf.isHidden = true
     }
-    
-    
-    
+ 
     func upload_PDF (pdf: Data? )  {
         if Reachable.isConnectedToNetwork(){
-            HUD.show(.progress)
-
-            HUD.show(.labeledProgress(title: "uploading PDF", subtitle: nil))
+            self.indicator?.start()
             API.uploadFileMultiPart(pdfDocument: pdf! as Data) { [self] (error : Error?, status  : Int?, message : String?,pdfUrl : String?) in
             if error == nil && status == 0 {
                 self.pdfUrl = URL(string: pdfUrl!)
                 self.Upload_Pdf_with_Name(Type: .add , PDFCategoryId:  ArrPDFCAtegory.Id  , Title: TFPdfName.text! , Url: pdfUrl! )
-            }else{
-                HUD.hide()
-                HUD.flash(.labeledError(title: "Error uploadin file", subtitle: "try again later"), delay: 2.0)
+            } else {
+                self.indicator?.stop()
+                self.showAlert(message: "Error uploading file please try again")
             }
         }
 
-        }else{
-            HUD.flash(.labeledError(title: "no connection", subtitle: "please check your internet connection"), delay: 2.0)
+        } else {
+            self.AlertInternet(controller: self)
+            self.indicator?.stop()
         }
     }
     
     
     func Upload_Pdf_with_Name ( Type : API.PdfEnum , PDFCategoryId : Int , Title : String , Url : String  ){
         
-        print("id : \(PDFCategoryId)       title : \(Title)")
-        
+        self.indicator?.start()
         if Reachable.isConnectedToNetwork() {
-            HUD.show(.progress)
-
             API.UploadPDF(type: Type , PDFCategoryId: PDFCategoryId, Title: Title, Url: Url) { [self] (error : Error?, status : Int, message : String?) in
                 if error == nil && status == 0  {
-                    HUD.hide()
+                    self.indicator?.stop()
                     TFPdfName.text = ""
                     ViewAddPdf.isHidden = true
-                    HUD.flash(.label("Success"), delay: 2.0)
                     PDFCategoryReload(pagenum: 0)
                 } else if error == nil && status == -1 {
-                    HUD.hide()
-                    HUD.flash(.label(message), delay: 2.0)
+                    self.indicator?.stop()
+                    self.AlertShowMessage(controller: self, text: message!, status: 1)
                 } else {
-                    HUD.hide()
-                    HUD.flash(.label("Server Error"), delay: 2.0)
+                    self.indicator?.stop()
+                    self.AlertServerError(controller: self)
                 }
             }
             
         } else {
-            HUD.flash(.labeledError(title: "no connection", subtitle: "please check your internet connection"), delay: 2.0)
+            self.AlertInternet(controller: self)
+            self.indicator?.stop()
         }
-        
     }
     
     @IBAction func BUPlus(_ sender: Any) {
@@ -150,7 +145,7 @@ class SubCategoryPdfVC: UIViewController {
     @IBAction func BUAddPdf(_ sender: Any) {
         if AddOrUpdate == 0 {
             if PickedPDFData == nil {
-                HUD.flash(.label("Please Select Pdf File"), delay: 2.0)
+                self.showAlert(message: "Please Select Pdf File")
             } else {
                 upload_PDF (pdf: PickedPDFData )
             }
@@ -163,19 +158,17 @@ class SubCategoryPdfVC: UIViewController {
         ViewAddPdf.isHidden = true
         TFPdfName.text = ""
         PickedPDFData = nil
-        
     }
-    
-    
-    func PDFCategoryReload(pagenum: Int){
         
+    func PDFCategoryReload(pagenum: Int){
+        self.indicator?.start()
         if Reachable.isConnectedToNetwork(){
-            HUD.show(.progress)
             API.GetAllPDfs(pagenum: pagenum, completion: { [self](error : Error?, pdfmodel : [CategoryModel]?, message : String?) -> Void in
                 if error == nil && message == "Success"{
                     if error != nil {
-                        HUD.flash(.label("Please Reload"), delay: 2.0)
-                    }else{
+                        self.AlertShowMessage(controller: self, text: "No Content To Show", status: 1)
+                        self.indicator?.stop()
+                    } else {
                         for data in pdfmodel! {
                             if data.Id ==  ArrPDFCAtegory.Id {
                                 self.ArrPDFCAtegory = data
@@ -183,20 +176,22 @@ class SubCategoryPdfVC: UIViewController {
                         }
                         ArrSub.removeAll()
                         getdata()
-                        HUD.hide(animated: true, completion: nil)
+                        self.indicator?.stop()
                     }
+                    
                 } else  if  error == nil && message != "Success"{
-                    HUD.flash(.label(message), delay: 2.0)
+                    self.AlertShowMessage(controller: self, text: message!, status: 1)
+                    self.indicator?.stop()
                 }else {
-                    HUD.flash(.label("Server Error"), delay: 2.0)
+                    self.AlertServerError(controller: self)
+                    self.indicator?.stop()
                 }
             }
             )} else {
-                showAlert(message: "No internet connection", title: "Alert")
-            }
+                self.AlertInternet(controller: self)
+                self.indicator?.stop()
+        }
     }
-    
-
 }
 
 

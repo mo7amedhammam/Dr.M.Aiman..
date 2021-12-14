@@ -15,15 +15,20 @@ class ContactUsVC: UIViewController {
         // Do any additional setup after loading the view.
     }
     
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
+    @IBAction func BuFacebook(_ sender: Any) {
+//        Helper.openFAcebook(FacebookID: "1420618394665689")
+        Helper.openFaceBook(pageId: "1420618394665689", pageName: "MohamedAyman3333")
     }
-    */
-
+    
+    @IBAction func BuYoutube(_ sender: Any) {
+        Helper.OpenYoutube(youtubeID: "UChF4j3TSfNn3fu_WfhUw6aw")
+    }
+    
+    @IBAction func BuWhatsapp(_ sender: Any) {
+        Helper.openWhatsapp(WhatsappNumber: "+201008987601")
+    }
+    
+    @IBAction func BuTelegram(_ sender: Any) {
+        Helper.openTelegram(telegramID: "NujqkN0suwE1MzU0")
+    }
 }

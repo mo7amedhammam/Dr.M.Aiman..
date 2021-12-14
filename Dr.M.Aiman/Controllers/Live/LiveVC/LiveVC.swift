@@ -7,11 +7,9 @@
 
 import UIKit
 import IQKeyboardManagerSwift
-import PKHUD
 import ImageViewer_swift
 
 class LiveVC : UIViewController {
-    
     
     @IBOutlet weak var LiveTV: UITableView!
     @IBOutlet weak var BuAddLiveOut: UIBarButtonItem!
@@ -27,55 +25,66 @@ class LiveVC : UIViewController {
     var pagenum = 0
     var ArrLive = [PostModel]()
     let refreshControl = UIRefreshControl()
+    var indicator:ProgressIndicator?
     
-    override func viewWillAppear(_ animated: Bool) {
-        self.ArrLive.removeAll()
-        self.GetLive(Type: "live", Refresh: "reload")
-    }
     
+
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        // indicator hud ----------------//
+        indicator = ProgressIndicator(inview:self.view,loadingViewColor: UIColor.lightGray, indicatorColor: #colorLiteral(red: 0.07058823529, green: 0.3568627451, blue: 0.6352941176, alpha: 1) , msg:  SalmanLocalize.textLocalize(key: "LPleaseWait") )
+        indicator?.center = self.view.center
+        self.view.addSubview(indicator!)
+        //  end indicator hud ----------------//
+        
         if Helper.getRoleName() == "Student"{
             self.navigationItem.rightBarButtonItem = nil
-                }
+        }
         LiveTV.dataSource = self
         LiveTV.delegate = self
         
         refreshControl.attributedTitle = NSAttributedString(string: "Refresh")
         refreshControl.addTarget(self, action: #selector(refresh), for: .valueChanged)
         LiveTV.addSubview(refreshControl)
-   
-   }
+        
+    }
     
-   @objc func refresh() {
-//    LiveTV.reloadData()
     
-      // Code to refresh table view
-       self.ArrLive.removeAll()
-       self.GetLive(Type: "live", Refresh: "refresh")
-   }
+    override func viewWillAppear(_ animated: Bool) {
+        self.ArrLive.removeAll()
+        self.GetLive(Type: "live", Refresh: "reload")
+    }
     
-
-//
-//    @IBAction func RefreshBtn(_ sender: Any) {
-//        if self.ArrLive.isEmpty == false && LiveTV.isHidden{
-//            self.LiveTV.isHidden = false
-//            self.ArrLive.removeAll()
-//            self.refreshControl.beginRefreshing()
-//            self.GetLive(Type: "live", Refresh: "refresh")
-//        }else {
-//            HUD.flash(.labeledError(title: "No Lives Found ", subtitle: ""), delay: 2)
-//        }
-//
-//    }
+    
+    @objc func refresh() {
+        //    LiveTV.reloadData()
+        
+        // Code to refresh table view
+        self.ArrLive.removeAll()
+        self.GetLive(Type: "live", Refresh: "refresh")
+    }
+    
+    
+    //
+    //    @IBAction func RefreshBtn(_ sender: Any) {
+    //        if self.ArrLive.isEmpty == false && LiveTV.isHidden{
+    //            self.LiveTV.isHidden = false
+    //            self.ArrLive.removeAll()
+    //            self.refreshControl.beginRefreshing()
+    //            self.GetLive(Type: "live", Refresh: "refresh")
+    //        }else {
+    //            HUD.flash(.labeledError(title: "No Lives Found ", subtitle: ""), delay: 2)
+    //        }
+    //
+    //    }
     
     
     //---------- Get All Lives -----
     
     func GetLive (Type : String , Refresh : String ){
         if Refresh == "reload" {
-            HUD.show(.progress)
+            self.indicator?.start()
         } else {
             self.refreshControl.beginRefreshing()
         }
@@ -84,37 +93,39 @@ class LiveVC : UIViewController {
                 
                 if error == nil && info != nil  {
                     if info!.isEmpty {
-                        self.showAlert(message: "No Content To show")
-//                        LiveTV.isHidden = true
-                        HUD.hide(animated: true)
+                        self.AlertShowMessage(controller: self, text: "No Content To Show", status: 1)
+                        //                        LiveTV.isHidden = true
+                        self.indicator?.stop()
                     } else {
-
                         for data in info! {
                             self.ArrLive.append(data)
                         }
                         //  LiveTV.isHidden = false
-                        HUD.hide(animated: true)
+                        self.indicator?.stop()
                         self.refreshControl.endRefreshing()
                     }
-
+                    
                 } else if error == nil && info == nil {
-                    HUD.flash(.label(message), delay: 2.0)
-                    HUD.hide(animated: true)
+                    self.AlertShowMessage(controller: self, text: message!, status: 1)
+                    self.indicator?.stop()
+                    
                 } else {
-                    self.showAlert(message: "Server Error")
-                    HUD.hide(animated: true)
+                    self.AlertServerError(controller: self)
+                    self.indicator?.stop()
+                    
                 }
                 self.refreshControl.endRefreshing()
                 LiveTV.reloadData()
-
             }
-
+            
         } else {
-            showAlert(message: "No Internet Connection")
+            self.AlertInternet(controller: self)
+            self.indicator?.stop()
+            
         }
     }
-
-
+    
+    
     @IBAction func NewLivePopUp(_ sender: Any) {
         self.showPopUp(pop: popupViewOut)
     }
@@ -126,27 +137,25 @@ class LiveVC : UIViewController {
     }
     
     func AddLive(){
-      
+        
         API.addNewLive(Title: VideoUrl.text!, Detailes: Videodescribtion.text! ) { (error : Error?, status : Int? , message : String? ) in
             if Reachable.isConnectedToNetwork(){
                 if error == nil && status == 0  {
-                    //                    self.showAlert(message: "Success")
-                    HUD.flash(.labeledSuccess(title: "Added", subtitle: ""), delay: 1.0)
                     self.hidePopUp(pop: self.popupViewOut)
                     //                    self.viewDidLoad()
-//                    if self.LiveTV.isHidden == true{
-//                        self.LiveTV.isHidden = false
-//                        // -> empty array object
-//                    }
+                    //                    if self.LiveTV.isHidden == true{
+                    //                        self.LiveTV.isHidden = false
+                    //                        // -> empty array object
+                    //                    }
                     self.ArrLive.removeAll()
                     self.viewDidLoad()
                 } else if error == nil && status == -1 {
                     self.showAlert(message: message!)
                 } else {
-                    self.showAlert(message: "Server Error")
+                    self.AlertServerError(controller: self)
                 }
             } else {
-                self.showAlert(message: "No Internet Connection")
+                self.AlertInternet(controller: self)
             }
         }
     }
@@ -165,33 +174,32 @@ extension LiveVC : UITableViewDataSource , UITableViewDelegate , LiveActionDeleg
                     for data in ArrLive {
                         if data.Id == id {
                             print(data.Id)
-
+                            
                             if data.ReactType == 1 {
                                 data.ReactType = -1
                                 data.ReactCount = data.ReactCount - 1
                                 LCount.text = "\(data.ReactCount)"
-//                                self.AllPostsTV.reloadRows(at: [index], with: .fade)
+                                //                                self.AllPostsTV.reloadRows(at: [index], with: .fade)
                                 LiveTV.reloadData()
                             } else {
                                 data.ReactType = 1
                                 data.ReactCount = data.ReactCount + 1
                                 LCount.text = "\(data.ReactCount)"
                                 LiveTV.reloadData()
-//                                self.AllPostsTV.reloadRows(at: [index], with: .fade)
+                                //                                self.AllPostsTV.reloadRows(at: [index], with: .fade)
                             }
                         }
                     }
                 } else if error == nil && status != 0 {
-                    HUD.flash(.label(message), delay: 2.0)
+                    self.AlertShowMessage(controller: self, text: message!, status: 1)
                 } else {
-                    HUD.flash(.label("Server Error"), delay: 2.0)
+                    self.AlertServerError(controller: self)
                 }
             }
             )} else {
-                HUD.flash(.labeledError(title: "No Internet Connection", subtitle: "") , delay: 2.0)
+                self.AlertInternet(controller: self)
             }
     }
-    
     
     func CommentFun(index: Int) {
         let vc = self.storyboard?.instantiateViewController(identifier: "CommentsVC") as? CommentsVC
@@ -216,10 +224,10 @@ extension LiveVC : UITableViewDataSource , UITableViewDelegate , LiveActionDeleg
         
         let alert = UIAlertController(title: nil, message: nil , preferredStyle: .actionSheet)
         
-//        alert.addAction(UIAlertAction(title: "Edit Live" , style: .default, handler: { [self] (action) in
-//            // action Here
-//            self.showAlert(message: "Success Edit")
-//        }))
+        //        alert.addAction(UIAlertAction(title: "Edit Live" , style: .default, handler: { [self] (action) in
+        //            // action Here
+        //            self.showAlert(message: "Success Edit")
+        //        }))
         
         alert.addAction(UIAlertAction(title: "Delete Live", style: .destructive, handler: { [self] (action) in
             // action Here
@@ -232,25 +240,24 @@ extension LiveVC : UITableViewDataSource , UITableViewDelegate , LiveActionDeleg
                         if error == nil && status == 0  {
                             self.ArrLive.remove(at: index)
                             self.LiveTV.deleteRows(at: [deleteIndex] , with: .fade)
-                            //                                self.showAlert(message: "Deleted")
-                            HUD.flash(.labeledSuccess(title: "Deleted", subtitle: ""), delay: 1.0)
-//                            if self.ArrLive.isEmpty {
-//                                self.LiveTV.isHidden = true
-//                            } else {
-//                                self.LiveTV.reloadData()
-//                            }
+                            self.showAlert(message: "Deleted")
+                            
+                            //                            if self.ArrLive.isEmpty {
+                            //                                self.LiveTV.isHidden = true
+                            //                            } else {
+                            //                                self.LiveTV.reloadData()
+                            //                            }
                             //                                self.ArrLive.count -= 1
                             //                                self.GetLive()
                             
                             LiveTV.reloadData()
                         } else if error == nil && status == -1 {
-                            self.showAlert(message: message!)
+                            self.AlertShowMessage(controller: self, text: message!, status: 1)
                         } else {
-                            self.showAlert(message: "Server Error")
+                            self.AlertServerError(controller: self)
                         }
                     } else {
-                        HUD.flash(.labeledError(title: "Network Error", subtitle: "Please Check your internet Connection"))
-                        //                            self.showAlert(message: "No Internet Connection")
+                        self.AlertInternet(controller: self)
                     }
                 }
                 
@@ -265,7 +272,7 @@ extension LiveVC : UITableViewDataSource , UITableViewDelegate , LiveActionDeleg
             //          cancel Button with cancel style
         }))
         self.present(alert, animated: true, completion: nil)
-
+        
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -274,12 +281,12 @@ extension LiveVC : UITableViewDataSource , UITableViewDelegate , LiveActionDeleg
     
     //MARK: Pagination
     
-//    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-//        if indexPath.row == ArrLive.count - 1{
-//            pagenum += 1
-//            GetLive(Type: "live", Refresh: "reload")
-//        }
-//    }
+    //    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+    //        if indexPath.row == ArrLive.count - 1{
+    //            pagenum += 1
+    //            GetLive(Type: "live", Refresh: "reload")
+    //        }
+    //    }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "LiveTVCell") as! LiveTVCell
@@ -287,8 +294,8 @@ extension LiveVC : UITableViewDataSource , UITableViewDelegate , LiveActionDeleg
         cell.delegate = self
         cell.indexx = indexPath.row
         cell.deleteIndex = indexPath
-//        cell.status = ArrLive[indexPath.row].ReactType
-//        cell.postId = ArrLive[indexPath.row].Id
+        cell.status = ArrLive[indexPath.row].ReactType
+        cell.postId = ArrLive[indexPath.row].Id
         
         if Helper.getRoleName() == "Student" {
             cell.BtnMore.isHidden  = true
@@ -306,10 +313,10 @@ extension LiveVC : UITableViewDataSource , UITableViewDelegate , LiveActionDeleg
         cell.PostLa.text = ArrLive[indexPath.row].Detailes
         let vidurl       =  URL( string: ArrLive[indexPath.row].Title)
         cell.VideoViewOut.loadVideoURL(vidurl!)
-     
-//        if indexPath.row == ArrLive.count-1{
-//            refreshControl.endRefreshing()
-//        }
+        
+        //        if indexPath.row == ArrLive.count-1{
+        //            refreshControl.endRefreshing()
+        //        }
         return cell
         
     }
@@ -317,7 +324,7 @@ extension LiveVC : UITableViewDataSource , UITableViewDelegate , LiveActionDeleg
 }
 
 extension LiveVC{
-  
+    
     func showPopUp(pop:UIView) {
         self.view.addSubview(pop)
         pop.center    = self.view.center
@@ -338,7 +345,5 @@ extension LiveVC{
             pop.removeFromSuperview()
         }
     }
-    
-    
-    
+        
 }
